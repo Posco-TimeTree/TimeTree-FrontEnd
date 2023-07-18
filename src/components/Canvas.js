@@ -1,32 +1,22 @@
-import React, { Ref } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import styled from "styled-components";
-import { useState, useRef, useEffect } from "react";
 import SideBar from "./SideBar";
-import Tree from "../assets/tree.png";
-
-interface mousePosition {
-  positionX: number | null;
-  positionY: number | null;
-}
-
-interface ObjContainerProps {
-  backgroundImg: string;
-}
+import Tree from "../img/tree.png";
 
 export default function Canvas() {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-  const [selectedObj, setSelectedObj] = useState<string>("");
-  const [mousePosition, setMousePosition] = useState<mousePosition>({
+  const canvasRef = useRef(null);
+  const [selectedObj, setSelectedObj] = useState("");
+  const [mousePosition, setMousePosition] = useState({
     positionX: null,
     positionY: null,
   });
-  const [mouseEndPosition, setMouseEndPosition] = useState<mousePosition>({
+  const [mouseEndPosition, setMouseEndPosition] = useState({
     positionX: null,
     positionY: null,
   });
 
   const drawBackground = () => {
-    const canvasCur = canvasRef.current as HTMLCanvasElement;
+    const canvasCur = canvasRef.current;
     const ctx = canvasCur.getContext("2d");
     const bgImage = new Image();
     bgImage.src = Tree;
@@ -34,8 +24,8 @@ export default function Canvas() {
     ctx.drawImage(bgImage, 0, 0, window.innerWidth, window.innerHeight);
   };
 
-  const drawObject = (mouseEndPosition: mousePosition) => {
-    const canvasCur = canvasRef.current as HTMLCanvasElement;
+  const drawObject = (mouseEndPosition) => {
+    const canvasCur = canvasRef.current;
     const ctx = canvasCur.getContext("2d");
     const objImage = new Image();
     objImage.src = selectedObj;
@@ -51,19 +41,13 @@ export default function Canvas() {
     );
   };
 
-  const handleSelectedObj = (obj: string) => {
+  const handleSelectedObj = (obj) => {
     setSelectedObj(obj);
   };
-  const handleMousePositionInSideBar = ({
-    positionX,
-    positionY,
-  }: mousePosition) => {
+
+  const handleMousePositionInSideBar = ({ positionX, positionY }) => {
     setMousePosition({ ...mousePosition, positionX, positionY });
   };
-  // useEffect(()=>{
-  //   drawBackground();
-  //   console.log("배경 그리기");
-  // },[]);
 
   return (
     <Wrapper
@@ -107,6 +91,7 @@ export default function Canvas() {
     </Wrapper>
   );
 }
+
 const Wrapper = styled.div`
   height: 100vh;
   width: 100%;
@@ -114,19 +99,17 @@ const Wrapper = styled.div`
   flex-direction: row;
 `;
 
-const SelectedObj = styled.div<ObjContainerProps>`
+const SelectedObj = styled.div`
   width: 100px;
   height: 100px;
-  background-image: url(${(props) => props.backgroundImg});
   background-size: cover;
   transform: translate(-50%, -50%);
   overflow: visible;
 `;
 
-const CanvasContainer = styled.div<ObjContainerProps>`
+const CanvasContainer = styled.div`
   position: relative;
   width: calc(100% - 120px);
-  background-image: url(${(props) => props.backgroundImg});
   background-position-x: center;
   background-position-y: -130px;
   background-size: 853px 1280px;
