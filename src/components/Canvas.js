@@ -19,7 +19,7 @@ export default function Canvas() {
   // useEffect(() => {
   //   // selectedObj 상태가 변경될 때마다 Canvas를 다시 그립니다.
   //   drawObject(mousePosition);
-  // }, [selectedObj]);
+  // }, []);
 
   const drawObject = (mouseEndPosition) => {
     const canvasCur = canvasRef.current;
@@ -140,8 +140,8 @@ const CanvasContainer = styled.div`
   background-position-y: -130px;
   background-size: 853px 1280px;
   background-repeat: no-repeat;
-  // background-color: #8aacbf87;
-  border: 1px red solid;
+  background-color: #8aacbf87;
 `;
 
-const CanvasComponent = styled.canvas``;
+const CanvasComponent = styled.canvas`
+`;
