@@ -5,6 +5,7 @@ import GiftTreeCanvas from '../components/GiftTreeCanvas';
 import WriteLetter from '../components/WriteLetter';
 import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
 import {useToggleStore} from "../stores/toggleStore";
+// import ToggleLight from '../components/ToggleLight';
 
 const GiftPage = () => {
   const [userName, setUserName] = useState("미진");
