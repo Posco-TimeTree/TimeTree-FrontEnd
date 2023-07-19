@@ -14,6 +14,7 @@ const AppRouter = () => {
           <Route path='/login' element={<LoginPage/>}/>
           <Route path='/make-my-tree' element={<MakeTreePage/>}/>
           <Route path='/gift-tree' element={<GiftPage/>}/>
+          {/* <Route path='/oauth/google/callback' element={<OAuthRedirect/>}/> */}
         </Routes>
       </BrowserRouter>
     </div>
