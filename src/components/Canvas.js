@@ -3,6 +3,19 @@ import styled from "styled-components";
 import SideBar from "./SideBar";
 import Tree from "../img/tree.png";
 
+const gifts = ["title1", "title2", "title3", "title4", "title5","title5","title5"];
+const images = [
+  require("../assets/giftBox1.png"),
+  require("../assets/giftBox2.png"),
+  require("../assets/giftBox3.png")
+];
+
+const getRandomImage = () => {
+  const randomIndex = Math.floor(Math.random() * images.length);
+  return images[randomIndex];
+};
+
+
 export default function Canvas() {
   const canvasRef = useRef(null);
   const [selectedObj, setSelectedObj] = useState("");
@@ -92,6 +105,20 @@ export default function Canvas() {
           height={window.innerHeight}
         />
       </CanvasContainer>
+      <GiftsWrapper>
+        {gifts.map((gift, index) => (
+          <img
+            key={index}
+            src={getRandomImage()}
+            style={{
+              width: "140px",
+              height: "auto",
+              marginRight: index === Math.floor(gifts.length / 2) ? "200px" : "-45px"
+            }}
+          />
+        ))}
+      </GiftsWrapper>
+
       <SideBar
         handleSelectedObj={handleSelectedObj}
         handleMousePositionInSideBar={handleMousePositionInSideBar}
@@ -141,6 +168,18 @@ const CanvasContainer = styled.div`
   background-size: 853px 1280px;
   background-repeat: no-repeat;
   background-color: #8aacbf87;
+`;
+const GiftsWrapper = styled.div`
+  position: absolute;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-self: center;
+  align-content: center;
+  align-items: flex-start;
+  margin-top: 550px;
+  flex-wrap: wrap-reverse;
+  width: 80%;
 `;
 
 const CanvasComponent = styled.canvas`
