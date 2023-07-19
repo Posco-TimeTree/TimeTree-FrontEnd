@@ -1,0 +1,33 @@
+.app {
+    text-align: center;
+    margin-top: 50px;
+  }
+  
+  .play-button,
+  .stop-button {
+    font-size: 12px;
+    font-weight: bold;
+    padding: 5px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .play-button {
+    background-color: green;
+    color: white;
+  }
+  
+  .play-button:hover {
+    background-color: darkgreen;
+  }
+  
+  .stop-button {
+    background-color: red;
+    color: white;
+  }
+  
+  .stop-button:hover {
+    background-color: darkred;
+  }
+  
