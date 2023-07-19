@@ -3,6 +3,8 @@ import styled from "styled-components";
 import Tree from "../img/tree.png";
 import { Card, CardTitle, CardBody, CardText, Button } from 'reactstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import axios from "axios";
+import axiosConfig from '../utils/api/axiosConfig';
 
 const gifts = [
   {
@@ -65,9 +67,22 @@ export default function GiftTreeCanvas() {
 
   }, []);
 
+
+  
+
   const loadCanvasState = () => {
     const canvasCur = canvasRef.current;
+    axiosConfig.get("/usertree/1",{
+    
+    }).then(res=>{
+      const imageData = `"${res.data}"`
+      console.log("data insert")
+    localStorage.setItem("canvasState", imageData);
+     }).catch(
+      error=>{console.error("Failed to get user tree:", error);
+    })
     const savedCanvasState = localStorage.getItem("canvasState");
+
 
     if (savedCanvasState) {
       const savedImage = new Image();

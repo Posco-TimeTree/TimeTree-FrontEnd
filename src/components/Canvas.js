@@ -2,7 +2,7 @@ import React, { useRef, useState, useEffect } from "react";
 import styled from "styled-components";
 import SideBar from "./SideBar";
 import Tree from "../img/tree.png";
-
+import axios from "axios"
 export default function Canvas() {
   const canvasRef = useRef(null);
   const [selectedObj, setSelectedObj] = useState("");
@@ -40,12 +40,28 @@ export default function Canvas() {
 
     // Canvas 상태를 JSON으로 직렬화하여 저장합니다.
     saveCanvasState();
+    test();
   };
 
   const handleSelectedObj = (obj) => {
     setSelectedObj(obj);
   };
-
+  const test = () => {
+    const canvasCur = canvasRef.current;
+    const canvasState = canvasCur.toDataURL();
+  
+    // 직렬화된 Canvas 상태 데이터와 userId를 서버로 전송합니다.
+    axios.post("http://localhost:8080/save_image", {
+      canvasState: canvasState,
+      userId: 1, // 예시로 userId를 1로 설정합니다.
+    })
+      .then(response => {
+        console.log("Canvas state saved successfully");
+      })
+      .catch(error => {
+        console.error("Failed to save canvas state:", error);
+      });
+  };
   const handleMousePositionInSideBar = ({ positionX, positionY }) => {
     setMousePosition({ ...mousePosition, positionX, positionY });
   };
