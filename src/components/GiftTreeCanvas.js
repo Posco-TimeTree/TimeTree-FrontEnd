@@ -3,7 +3,20 @@ import styled from "styled-components";
 import SideBar from "./SideBar";
 import Tree from "../img/tree.png";
 
-export default function Canvas() {
+const gifts = ["title1", "title2", "title3", "title4", "title5","title5"];
+const images = [
+  require("../img/giftBox1.png"),
+  require("../img/giftBox2.png"),
+  require("../img/giftBox3.png")
+];
+
+const getRandomImage = () => {
+  const randomIndex = Math.floor(Math.random() * images.length);
+  return images[randomIndex];
+};
+
+
+export default function GiftTreeCanvas() {
   const canvasRef = useRef(null);
   const [selectedObj, setSelectedObj] = useState("");
   const [mousePosition, setMousePosition] = useState({
@@ -15,48 +28,6 @@ export default function Canvas() {
     // 컴포넌트 마운트 시 저장된 Canvas 상태를 로드하여 복원합니다.
     loadCanvasState();
   }, []);
-
-  // useEffect(() => {
-  //   // selectedObj 상태가 변경될 때마다 Canvas를 다시 그립니다.
-  //   drawObject(mousePosition);
-  // }, []);
-
-  const drawObject = (mouseEndPosition) => {
-    const canvasCur = canvasRef.current;
-    const ctx = canvasCur.getContext("2d");
-    const objImage = new Image();
-    objImage.src = selectedObj;
-    if(!selectedObj) return;
-    if (ctx === null) return;
-    if (!mouseEndPosition.positionX) return;
-    if (!mouseEndPosition.positionY) return;
-    ctx.drawImage(
-      objImage,
-      mouseEndPosition.positionX - 50,
-      mouseEndPosition.positionY - 50,
-      100,
-      100
-    );
-
-    // Canvas 상태를 JSON으로 직렬화하여 저장합니다.
-    saveCanvasState();
-  };
-
-  const handleSelectedObj = (obj) => {
-    setSelectedObj(obj);
-  };
-
-  const handleMousePositionInSideBar = ({ positionX, positionY }) => {
-    setMousePosition({ ...mousePosition, positionX, positionY });
-  };
-
-  const saveCanvasState = () => {
-    const canvasCur = canvasRef.current;
-    const canvasState = canvasCur.toDataURL();
-
-    // Canvas 상태를 JSON으로 직렬화하여 로컬 스토리지에 저장합니다.
-    localStorage.setItem("canvasState", JSON.stringify(canvasState));
-  };
 
   const loadCanvasState = () => {
     const canvasCur = canvasRef.current;
@@ -92,26 +63,19 @@ export default function Canvas() {
           height={window.innerHeight}
         />
       </CanvasContainer>
-      <SideBar
-        handleSelectedObj={handleSelectedObj}
-        handleMousePositionInSideBar={handleMousePositionInSideBar}
-      />
-      {selectedObj !== "" &&
-      mousePosition.positionX &&
-      mousePosition.positionY ? (
-        <SelectedObj
-          backgroundImg={selectedObj}
-          style={{
-            position: "absolute",
-            left: mousePosition.positionX,
-            top: mousePosition.positionY,
-          }}
-          onClick={(e) => {
-            setSelectedObj("");
-            drawObject({ positionX: e.clientX, positionY: e.clientY });
-          }}
-        />
-      ) : null}
+      <GiftsWrapper>
+        {gifts.map((gift, index) => (
+          <img
+            key={index}
+            src={getRandomImage()}
+            style={{
+              width: "140px",
+              height: "auto",
+              marginRight: index === Math.floor(gifts.length/ 2 -1) ? "200px" : "-45px"
+            }}
+          />
+        ))}
+      </GiftsWrapper>
     </Wrapper>
   );
 }
@@ -134,13 +98,26 @@ const SelectedObj = styled.div`
 
 const CanvasContainer = styled.div`
   position: relative;
-  width: calc(100% - 120px);
+  width: 100%;
   background-image: url(${(props) => props.backgroundImg});
   background-position-x: center;
   background-position-y: -130px;
   background-size: 853px 1280px;
   background-repeat: no-repeat;
   background-color: #8aacbf87;
+`;
+const GiftsWrapper = styled.div`
+  position: absolute;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-self: center;
+  align-content: center;
+  align-items: flex-start;
+  margin-top: 550px;
+  flex-wrap: wrap-reverse;
+  width: 100%;
+  margin-left: -30px;
 `;
 
 const CanvasComponent = styled.canvas`

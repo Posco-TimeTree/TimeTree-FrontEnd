@@ -1,10 +1,9 @@
 import React from 'react';
+import GiftTreeCanvas from '../components/GiftTreeCanvas.js';
 
 const MakeTreePage = () => {
   return (
-    <div>
-      나만의 트리 꾸미기
-    </div>
+    <GiftTreeCanvas/>
   );
 };
 
