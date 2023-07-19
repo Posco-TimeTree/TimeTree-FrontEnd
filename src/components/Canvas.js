@@ -3,6 +3,7 @@ import styled from "styled-components";
 import SideBar from "./SideBar";
 import Tree from "../img/tree.png";
 import axios from "axios"
+import axiosConfig from "../utils/api/axiosConfig";
 export default function Canvas() {
   const canvasRef = useRef(null);
   const [selectedObj, setSelectedObj] = useState("");
@@ -51,7 +52,7 @@ export default function Canvas() {
     const canvasState = canvasCur.toDataURL();
   
     // 직렬화된 Canvas 상태 데이터와 userId를 서버로 전송합니다.
-    axios.post("http://localhost:8080/save_image", {
+    axiosConfig.post("/save_image", {
       canvasState: canvasState,
       userId: 1, // 예시로 userId를 1로 설정합니다.
     })
