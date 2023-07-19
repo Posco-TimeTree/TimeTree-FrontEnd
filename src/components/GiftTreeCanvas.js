@@ -1,9 +1,36 @@
 import React, { useRef, useState, useEffect } from "react";
 import styled from "styled-components";
-import SideBar from "./SideBar";
 import Tree from "../img/tree.png";
+import { Card, CardTitle, CardBody, CardText, Button } from 'reactstrap';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
-const gifts = ["title1", "title2", "title3", "title4", "title5","title5"];
+const gifts = [
+  {
+    boxId: 0,
+    treeId: 0,
+    content: "메리 클스마스~~~"
+  },{
+    boxId: 1,
+    treeId: 0,
+    content: "사실 너를 좋아했어.."
+  },{
+    boxId: 2,
+    treeId: 0,
+    content: "그만 나대"
+  },{
+    boxId: 3,
+    treeId: 0,
+    content: "아 배고파"
+  },{
+    boxId: 4,
+    treeId: 0,
+    content: "올 한 해 동안 고생 많았다!"
+  },{
+    boxId: 5,
+    treeId: 0,
+    content: "이런 거 왜 함? 초딩같애"
+  }
+];
 const images = [
   require("../img/giftBox1.png"),
   require("../img/giftBox2.png"),
@@ -15,18 +42,27 @@ const getRandomImage = () => {
   return images[randomIndex];
 };
 
+const giftImages = gifts.map(() => getRandomImage()); // Generate random images for each gift
 
 export default function GiftTreeCanvas() {
   const canvasRef = useRef(null);
   const [selectedObj, setSelectedObj] = useState("");
+  const [isOpen, setIsOpen] = useState(false);
   const [mousePosition, setMousePosition] = useState({
     positionX: null,
     positionY: null,
   });
+  const [selectedGift, setSelectedGift] = useState(null); // New state for the selected gift
+  const toggle = () => setIsOpen(!isOpen); 
+  const selectGift = (index) => {
+    setSelectedGift(index); // Set the selected gift index
+    toggle(); // Open the modal
+  };
 
   useEffect(() => {
     // 컴포넌트 마운트 시 저장된 Canvas 상태를 로드하여 복원합니다.
     loadCanvasState();
+
   }, []);
 
   const loadCanvasState = () => {
@@ -65,15 +101,29 @@ export default function GiftTreeCanvas() {
       </CanvasContainer>
       <GiftsWrapper>
         {gifts.map((gift, index) => (
-          <img
-            key={index}
-            src={getRandomImage()}
-            style={{
-              width: "140px",
-              height: "auto",
-              marginRight: index === Math.floor(gifts.length/ 2 -1) ? "200px" : "-45px"
-            }}
-          />
+          <div>
+            <img
+              key={index}
+              src={giftImages[index]}
+              style={{
+                width: "140px",
+                height: "auto",
+                overflow: "visible",
+                zIndex: index,
+                marginRight: index === Math.floor(gifts.length/ 2 -1) ? "200px" : "-5px"
+              }}
+              onClick={()=>selectGift(index)}
+            />
+            {isOpen && (selectedGift == index) &&  ( // Conditionally render the modal
+            <GiftModal>
+              <Card body style={{width:"500px"}}>
+                <CardTitle style={{marginBottom: "20px"}} tag="h2">{index+1}번째 편지</CardTitle>
+                <CardText style={{marginBottom: "30px"}} tag="h3">{gift.content}</CardText>
+                <Button onClick={toggle} color="success">확인</Button>
+              </Card>
+            </GiftModal>
+          )}
+          </div>
         ))}
       </GiftsWrapper>
     </Wrapper>
@@ -119,6 +169,13 @@ const GiftsWrapper = styled.div`
   width: 100%;
   margin-left: -30px;
 `;
+const GiftModal = styled.div`
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  transition: opacity 0.3s ease-in-out;
+`
 
 const CanvasComponent = styled.canvas`
 `;
