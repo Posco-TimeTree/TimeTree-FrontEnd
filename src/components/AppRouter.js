@@ -3,7 +3,7 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import LoginPage from '../pages/LoginPage';
 import MainPage from '../pages/MainPage';
 import MakeTreePage from '../pages/MakeTreePage';
-import GiftTreeCanvas from './GiftTreeCanvas';
+import GiftTreeCanvas from '../components/GiftTreeCanvas';
 
 const AppRouter = () => {
   return (
