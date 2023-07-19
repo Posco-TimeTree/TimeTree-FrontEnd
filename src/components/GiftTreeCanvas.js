@@ -119,8 +119,8 @@ export default function GiftTreeCanvas() {
       <GiftsWrapper>
         {gifts.map((gift, index) => (
           <motion.div
-            animate={!isReloaded && index === gifts.length - 1 ? { scale: [0, 1], rotate: [0, 2, 0, -2, 0, 2, 0, -2, 0] } : {}}
-            key={index}
+          animate={!isReloaded && index === gifts.length - 1 ? { scale: [0, 1], rotate: [0, 3, 0, -3, 0, 3, 0, -3, 0] } : {}}
+          key={index}
           >
             <img
               key={index}
@@ -145,7 +145,7 @@ export default function GiftTreeCanvas() {
           )}
           </motion.div>
         ))}
-        <div onClick={()=>setIsReloaded(false)}>daskdfjlaskjdf</div>
+        <div onClick={()=>setIsReloaded(false)}>dddd</div>
       </GiftsWrapper>
     </Wrapper>
   );
