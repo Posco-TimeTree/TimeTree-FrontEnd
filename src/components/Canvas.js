@@ -5,9 +5,9 @@ import Tree from "../img/tree.png";
 
 const gifts = ["title1", "title2", "title3", "title4", "title5","title5","title5"];
 const images = [
-  require("../assets/giftBox1.png"),
-  require("../assets/giftBox2.png"),
-  require("../assets/giftBox3.png")
+  require("../img/giftBox1.png"),
+  require("../img/giftBox2.png"),
+  require("../img/giftBox3.png")
 ];
 
 const getRandomImage = () => {
