@@ -53,9 +53,10 @@ export default function Canvas() {
   const saveCanvasState = () => {
     const canvasCur = canvasRef.current;
     const canvasState = canvasCur.toDataURL();
-
     // Canvas 상태를 JSON으로 직렬화하여 로컬 스토리지에 저장합니다.
+    // localStorage.setItem("canvasState", JSON.stringify(canvasState));
     localStorage.setItem("canvasState", JSON.stringify(canvasState));
+
   };
 
   const loadCanvasState = () => {
