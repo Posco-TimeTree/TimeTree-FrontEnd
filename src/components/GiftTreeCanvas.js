@@ -5,6 +5,7 @@ import { Card, CardTitle, CardBody, CardText, Button } from 'reactstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import axios from "axios";
 import axiosConfig from '../utils/api/axiosConfig';
+import { motion } from "framer-motion";
 
 const gifts = [
   {
@@ -50,6 +51,7 @@ export default function GiftTreeCanvas() {
   const canvasRef = useRef(null);
   const [selectedObj, setSelectedObj] = useState("");
   const [isOpen, setIsOpen] = useState(false);
+  const [isReloaded, setIsReloaded] = useState(true);
   const [mousePosition, setMousePosition] = useState({
     positionX: null,
     positionY: null,
@@ -64,7 +66,7 @@ export default function GiftTreeCanvas() {
   useEffect(() => {
     // 컴포넌트 마운트 시 저장된 Canvas 상태를 로드하여 복원합니다.
     loadCanvasState();
-
+    setIsReloaded(true);
   }, []);
 
 
@@ -116,7 +118,10 @@ export default function GiftTreeCanvas() {
       </CanvasContainer>
       <GiftsWrapper>
         {gifts.map((gift, index) => (
-          <div>
+          <motion.div
+            animate={!isReloaded && index === gifts.length - 1 ? { scale: [0, 1], rotate: [0, 2, 0, -2, 0, 2, 0, -2, 0] } : {}}
+            key={index}
+          >
             <img
               key={index}
               src={giftImages[index]}
@@ -138,8 +143,9 @@ export default function GiftTreeCanvas() {
               </Card>
             </GiftModal>
           )}
-          </div>
+          </motion.div>
         ))}
+        <div onClick={()=>setIsReloaded(false)}>daskdfjlaskjdf</div>
       </GiftsWrapper>
     </Wrapper>
   );
