@@ -2,18 +2,27 @@ import React from 'react';
 import styled from 'styled-components';
 import BackgroundImg from "../img/loginImg.jpg";
 import { Link } from 'react-router-dom';
+import {motion} from "framer-motion";
 
 const LoginPage = () => {
   return (
     <LoginWapper backgroundImg={BackgroundImg}>
-      <LoginContainer>
-        <LoginTitle>내 <span style={{color:'darkgreen'}}>트리</span>를 꾸며줘</LoginTitle>
-        <Link to={"/main"}>
-          <LoginBox>
-            <LoginBtnText>로그인하기</LoginBtnText>
-          </LoginBox>
-        </Link>
-      </LoginContainer>
+      <motion.div
+        layout
+        animate={{ opacity: [0.1,1] }}
+        transition={{
+          opacity: { ease: "linear" },
+          layout: { duration: 0.7 }
+        }}>
+        <LoginContainer>
+          <LoginTitle>내 <span style={{color:'darkgreen'}}>트리</span>를 꾸며줘</LoginTitle>
+          <Link to={"/main"}>
+            <LoginBox>
+              <LoginBtnText>로그인하기</LoginBtnText>
+            </LoginBox>
+          </Link>
+        </LoginContainer>
+      </motion.div>
     </LoginWapper>
   );
 };
