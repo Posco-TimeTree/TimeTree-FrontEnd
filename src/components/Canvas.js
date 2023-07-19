@@ -11,11 +11,22 @@ export default function Canvas() {
     positionY: null,
   });
 
+  useEffect(() => {
+    // 컴포넌트 마운트 시 저장된 Canvas 상태를 로드하여 복원합니다.
+    loadCanvasState();
+  }, []);
+
+  // useEffect(() => {
+  //   // selectedObj 상태가 변경될 때마다 Canvas를 다시 그립니다.
+  //   drawObject(mousePosition);
+  // }, [selectedObj]);
+
   const drawObject = (mouseEndPosition) => {
     const canvasCur = canvasRef.current;
     const ctx = canvasCur.getContext("2d");
     const objImage = new Image();
     objImage.src = selectedObj;
+    if(!selectedObj) return;
     if (ctx === null) return;
     if (!mouseEndPosition.positionX) return;
     if (!mouseEndPosition.positionY) return;
@@ -26,6 +37,9 @@ export default function Canvas() {
       100,
       100
     );
+
+    // Canvas 상태를 JSON으로 직렬화하여 저장합니다.
+    saveCanvasState();
   };
 
   const handleSelectedObj = (obj) => {
@@ -34,6 +48,29 @@ export default function Canvas() {
 
   const handleMousePositionInSideBar = ({ positionX, positionY }) => {
     setMousePosition({ ...mousePosition, positionX, positionY });
+  };
+
+  const saveCanvasState = () => {
+    const canvasCur = canvasRef.current;
+    const canvasState = canvasCur.toDataURL();
+
+    // Canvas 상태를 JSON으로 직렬화하여 로컬 스토리지에 저장합니다.
+    localStorage.setItem("canvasState", JSON.stringify(canvasState));
+  };
+
+  const loadCanvasState = () => {
+    const canvasCur = canvasRef.current;
+    const savedCanvasState = localStorage.getItem("canvasState");
+
+    if (savedCanvasState) {
+      const savedImage = new Image();
+      savedImage.src = JSON.parse(savedCanvasState);
+      savedImage.onload = () => {
+        const ctx = canvasCur.getContext("2d");
+        ctx.clearRect(0, 0, canvasCur.width, canvasCur.height);
+        ctx.drawImage(savedImage, 0, 0);
+      };
+    }
   };
 
   return (
@@ -103,7 +140,8 @@ const CanvasContainer = styled.div`
   background-position-y: -130px;
   background-size: 853px 1280px;
   background-repeat: no-repeat;
-  background-color: #8aacbf87;
+  // background-color: #8aacbf87;
+  border: 1px red solid;
 `;
 
 const CanvasComponent = styled.canvas``;
