@@ -1,9 +1,9 @@
 import React from 'react';
-import GiftTreeCanvas from '../components/GiftTreeCanvas.js';
+import Canvas from '../components/Canvas';
 
 const MakeTreePage = () => {
   return (
-    <GiftTreeCanvas/>
+    <Canvas/>
   );
 };
 
