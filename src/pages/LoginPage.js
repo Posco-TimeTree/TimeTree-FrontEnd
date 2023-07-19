@@ -48,7 +48,6 @@ const LoginContainer = styled.div`
 const LoginTitle = styled.div`
   text-align: center;
   font-size: 100px;
-  font-family: 'MaplestoryOTFBold';
 `
 
 const LoginBox = styled.div`
@@ -65,7 +64,6 @@ const LoginBox = styled.div`
 `
 const LoginBtnText = styled.div`
   font-size: 45px;
-  font-family: 'MaplestoryOTFBold';
 `
 
 export default LoginPage;

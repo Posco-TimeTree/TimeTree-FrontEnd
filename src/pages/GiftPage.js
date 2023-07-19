@@ -3,10 +3,15 @@ import styled from 'styled-components';
 import img from '../img/tree.png';
 import GiftTreeCanvas from '../components/GiftTreeCanvas';
 import WriteLetter from '../components/WriteLetter';
-import { Button } from 'reactstrap';
+import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
+import {useToggleStore} from "../stores/toggleStore";
 
 const GiftPage = () => {
   const [userName, setUserName] = useState("미진");
+  // const [modal, setModal] = useState(false);
+  // const toggle = () => setModal(!modal);
+  const {toggle} = useToggleStore();
+
   return (
     <>
     <ButtonWrapper>
@@ -14,15 +19,18 @@ const GiftPage = () => {
         color="primary"
         size='lg'
         outline
+        onClick={toggle}
       >
         편지 쓰기
       </StyledButton>
     </ButtonWrapper>
+
     <Wrapper>
       <Title>{userName}님의 크리스마스 트리</Title>
-      {/* <WriteLetter/> */}
       <GiftTreeCanvas/>
     </Wrapper>
+
+    <WriteLetter/>
     </>
   );
 };
@@ -53,5 +61,6 @@ const StyledButton = styled(Button)`
   padding: 20px 40px;
   font-size: 1.5rem;
 `;
+
 
 export default GiftPage;

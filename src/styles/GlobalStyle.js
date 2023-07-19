@@ -10,6 +10,7 @@ const GlobalStyle = createGlobalStyle`
 *{
   box-sizing:border-box;
 	overflow:hidden;
+  font-family: 'MaplestoryOTFBold';
 }
 p,
 h1,
