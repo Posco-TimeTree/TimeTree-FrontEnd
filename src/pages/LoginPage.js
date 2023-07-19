@@ -1,5 +1,6 @@
 import React from 'react';
-
+import styled from 'styled-components';
+import img from '../img/tree.png';
 const LoginPage = () => {
   return (
     <div>
@@ -7,5 +8,4 @@ const LoginPage = () => {
     </div>
   );
 };
-
 export default LoginPage;

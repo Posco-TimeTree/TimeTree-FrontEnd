@@ -50,6 +50,7 @@ const ObjContainer = styled.div`
   cursor: pointer;
   width: 100px;
   height: 100px;
+  background-image: ${(props) => `url(${props.backgroundImg})`};
   background-size: cover;
   overflow: visible;
 `;

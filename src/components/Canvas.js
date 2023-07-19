@@ -10,19 +10,6 @@ export default function Canvas() {
     positionX: null,
     positionY: null,
   });
-  const [mouseEndPosition, setMouseEndPosition] = useState({
-    positionX: null,
-    positionY: null,
-  });
-
-  const drawBackground = () => {
-    const canvasCur = canvasRef.current;
-    const ctx = canvasCur.getContext("2d");
-    const bgImage = new Image();
-    bgImage.src = Tree;
-    if (ctx === null) return;
-    ctx.drawImage(bgImage, 0, 0, window.innerWidth, window.innerHeight);
-  };
 
   const drawObject = (mouseEndPosition) => {
     const canvasCur = canvasRef.current;
@@ -103,6 +90,7 @@ const SelectedObj = styled.div`
   width: 100px;
   height: 100px;
   background-size: cover;
+  background-image: url(${(props) => props.backgroundImg});
   transform: translate(-50%, -50%);
   overflow: visible;
 `;
@@ -110,6 +98,7 @@ const SelectedObj = styled.div`
 const CanvasContainer = styled.div`
   position: relative;
   width: calc(100% - 120px);
+  background-image: url(${(props) => props.backgroundImg});
   background-position-x: center;
   background-position-y: -130px;
   background-size: 853px 1280px;
