@@ -7,6 +7,7 @@ import GiftPage from '../pages/GiftPage';
 import OauthRedirect from './OAuthRedirect';
 import PrivateRouter from './PrivateRouter';
 //import ToggleLight from './ToggleLight';
+import ThreeExample from '../pages/ThreeExample';
 
 const AppRouter = () => {
   return (
