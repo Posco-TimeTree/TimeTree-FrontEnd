@@ -1,63 +1,50 @@
 import React, { useState, useEffect } from 'react';
-import { Modal } from 'reactstrap';
-import 'bootstrap/dist/css/bootstrap.min.css';
+import ReactPlayer from 'react-player';
 import styled from 'styled-components';
 
-const AdVideoPlayer = () => {
-  const [showVideo, setShowVideo] = useState(false);
+const VideoPlayer = (props) => {
   const [showCancelButton, setShowCancelButton] = useState(false);
 
   useEffect(() => {
-    let timeoutId;
+    const timeoutId = setTimeout(() => {
+      setShowCancelButton(true);
+    }, 10000);
 
-    // 동영상 재생 시, 5초 후에 종료 버튼을 보여주기 위한 타이머 설정
-    if (showVideo) {
-      timeoutId = setTimeout(() => {
-        setShowCancelButton(true);
-      }, 5000); // 5초 후에 종료 버튼 보여줌
-    }
-
-    // 컴포넌트가 언마운트될 때 타이머 제거
-    return () => clearTimeout(timeoutId);
-  }, [showVideo]);
-
-  const handlePlayButtonClick = () => {
-    setShowVideo(true);
-  };
+    return () => {
+      clearTimeout(timeoutId);
+    };
+  }, []);
 
   const handleCancelButtonClick = () => {
-    setShowVideo(false);
     setShowCancelButton(false);
+    props.onVideoEnd();
   };
 
   return (
     <div>
-      {/* {!showVideo && (
-        <button onClick={handlePlayButtonClick}>동영상 재생</button>
-      )} */}
-
-<button onClick={handlePlayButtonClick}>동영상 재생</button>
-
-      {showVideo && (
-        <VideoModal>
-          <video controls>
-            {/* 동영상 URL 또는 재생할 동영상 파일 경로를 지정 */}
-            <source src="/gameAd.mp4" type="gameAd/mp4" />
-            {/* 다른 형식의 동영상을 지원하려면 여기에 추가 가능 */}
-          </video>
-          {showCancelButton && (
-            <button onClick={handleCancelButtonClick}>종료</button>
-          )}
-        </VideoModal>
+      <ReactPlayer
+        url="/ad.mp4" // 여기에 MP4 파일의 URL을 입력합니다.
+        playing // 자동으로 재생
+        controls // 재생 컨트롤러 표시
+        width="640px" // 동영상 플레이어의 너비
+        height="360px" // 동영상 플레이어의 높이
+      />
+      {showCancelButton && (
+        <CancleButton onClick={handleCancelButtonClick}>Skip Ad</CancleButton>
       )}
     </div>
   );
 };
 
-const VideoModal = styled.div`
-  display: flex;
-  width: 100%;
-  height: auto;
-`
+export default VideoPlayer;
 
-export default AdVideoPlayer;
+const CancleButton = styled.button`
+  width: 220px;
+  height: 75px;
+  font-size: 30px;
+  color: white;
+  position: absolute;
+  top: 200px;
+  left: 420px;
+  background-color: rgba(128, 128, 128, 0.5);
+`
