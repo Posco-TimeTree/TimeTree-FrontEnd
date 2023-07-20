@@ -1,32 +1,41 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import GlobalStyle from './styles/GlobalStyle'
+import GlobalStyle from './styles/GlobalStyle';
 import Canvas from './components/Canvas';
 import AppRouter from './components/AppRouter';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import ReactPlayer from 'react-player';
 
+const mp3Files = ['IU.mp3', 'All I Want for Christmas Is You.mp3', 'Underneath the Tree.mp3', 'Santa Tell Me.mp3']; // 필요에 따라 더 많은 mp3 파일을 추가하세요
+
 export default function App() {
   const [isPlaying, setIsPlaying] = useState(false);
-  const audioUrl = '/IU.mp3';
+  const [audioUrl, setAudioUrl] = useState('');
   const togglePlay = () => {
     setIsPlaying(!isPlaying);
   };
 
+  useEffect(() => {
+    // mp3Files 배열에서 랜덤으로 mp3 파일을 선택합니다
+    const randomIndex = Math.floor(Math.random() * mp3Files.length);
+    const randomMp3 = mp3Files[randomIndex];
+    setAudioUrl(`/${randomMp3}`);
+  }, [isPlaying]);
+
   return (
     <>
-    <GlobalStyle />
-    <div className="App">
-      <PlayButton isPlaying={isPlaying} onClick={togglePlay}>
-        <img src={require('./img/music.png')} style={{width: "40px"}}/>
-      </PlayButton>
-      {isPlaying && (
-        <div style={{ display: 'none' }}>
-          <ReactPlayer url={audioUrl} playing />
-        </div>
-      )}
-      <AppRouter/>
-    </div>
+      <GlobalStyle />
+      <div className="App">
+        <PlayButton isPlaying={isPlaying} onClick={togglePlay}>
+          <img src={require('./img/music.png')} style={{ width: '40px' }} alt="재생 버튼" />
+        </PlayButton>
+        {isPlaying && (
+          <div style={{ display: 'none' }}>
+            <ReactPlayer url={audioUrl} playing />
+          </div>
+        )}
+        <AppRouter />
+      </div>
     </>
   );
 }
