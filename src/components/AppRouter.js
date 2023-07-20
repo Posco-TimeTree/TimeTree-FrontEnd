@@ -7,6 +7,7 @@ import GiftPage from '../pages/GiftPage';
 import OauthRedirect from './OAuthRedirect';
 import PrivateRouter from './PrivateRouter';
 import ThreeExample from '../pages/ThreeExample';
+import AdVideoPlayer from './AdVideoPlayer';
 
 const AppRouter = () => {
   return (
@@ -23,6 +24,7 @@ const AppRouter = () => {
             <Route path='/three' element={<ThreeExample/>}/>
           </Route>
         </Routes>
+        <Route path='/ad' elemen={<AdVideoPlayer/>}/>
       </BrowserRouter>
     </div>
   );

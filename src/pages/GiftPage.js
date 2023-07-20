@@ -8,6 +8,7 @@ import {useToggleStore} from "../stores";
 import ToggleLight from '../components/ToggleLight';
 import Outside from "../img/outside.jpg";
 import { useUserStore } from '../stores/userStore';
+import Snowfall from 'react-snowfall';
 
 const GiftPage = () => {
   // const [userName, setUserName] = useState("미진");
