@@ -3,15 +3,16 @@ import { Input, Label } from 'reactstrap';
 import styled from 'styled-components';
 import axiosConfig from '../utils/api/axiosConfig';
 import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
-import {useToggleStore} from "../stores/toggleStore";
+import {useToggleStore, useUserStore} from "../stores";
 import {useGiftBoxCountStore} from "../stores/giftBoxCount";
 
 const WriteLetter = () => {
   const {isToggled, toggle} = useToggleStore();
+  const {user} = useUserStore();
   const [message, setMessage] = useState("");
   const [length, setLength] = useState(0);
   // const [giftBoxCount, setGiftBoxCount] = useState(5); // db에서 갯수 가져오기(api)
-  const {giftBoxCount, setGiftBoxCount} = useGiftBoxCountStore();
+  const {giftBoxCount, setGiftBoxCountPlus} = useGiftBoxCountStore();
 
   useEffect(()=>{
     console.log("box count: ", giftBoxCount);
@@ -29,7 +30,7 @@ const WriteLetter = () => {
       content: message,
     }).then(res=>{
       console.log(res.data);
-      setGiftBoxCount();
+      setGiftBoxCountPlus();
     }).catch(err=>{console.log(err)})
   }
   const onChange = (e)=>{
@@ -40,7 +41,7 @@ const WriteLetter = () => {
   return (
     <Wrapper>
       <Modal isOpen={isToggled} toggle={toggle} centered size={"lg"}>
-        <ModalHeader toggle={toggle}>To. 미진</ModalHeader>
+        <ModalHeader toggle={toggle}>To. {user.name}</ModalHeader>
         <ModalBody>
           <form onSubmit={onSubmit}>
             <Label for="exampleText">편지를 남겨주세요</Label>

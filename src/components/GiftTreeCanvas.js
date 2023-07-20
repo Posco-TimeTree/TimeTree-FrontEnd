@@ -46,7 +46,7 @@ const getRandomImage = () => {
   return images[randomIndex];
 };
 
-const giftImages = gifts.map(() => getRandomImage()); // Generate random images for each gift
+const giftImages = gifts.map(() => getRandomImage());
 
 export default function GiftTreeCanvas() {
   const canvasRef = useRef(null);
@@ -57,18 +57,11 @@ export default function GiftTreeCanvas() {
   const [isReloaded, setIsReloaded] = useState(true);
   const {giftBoxCount} = useGiftBoxCountStore();
 
-  useEffect(()=>{
-    axiosConfig.get("/message")
-    .then(res=>{
-      console.log(res.data);
-    })
-  },[giftBoxCount]);
-
   const [mousePosition, setMousePosition] = useState({
     positionX: null,
     positionY: null,
   });
-  const [selectedGift, setSelectedGift] = useState(null); // New state for the selected gift
+  const [selectedGift, setSelectedGift] = useState(null); 
   const toggle = () => setIsOpen(!isOpen); 
   const selectGift = (index) => {
     setSelectedGift(index); // Set the selected gift index
@@ -80,43 +73,47 @@ export default function GiftTreeCanvas() {
   // 현재 날짜와 시간 가져오기
   const currentDate = new Date();
 
+  const [canvasState, setCanvasState] = useState("");
   useEffect(() => {
     // 컴포넌트 마운트 시 저장된 Canvas 상태를 로드하여 복원합니다.
     loadCanvasState();
     setIsReloaded(true);
-    console.log(currentDate);
   }, []);
 
-  const loadCanvasState = () => {
+  useEffect(()=>{
     const canvasCur = canvasRef.current;
-    axiosConfig.get("/usertree/1",{
-    
-    }).then(res=>{
-      const imageData = `"${res.data}"`
-      console.log("data insert")
-    localStorage.setItem("canvasState", imageData);
-     }).catch(
-      error=>{console.error("Failed to get user tree:", error);
-    })
-    const savedCanvasState = localStorage.getItem("canvasState");
-
-
-    if (savedCanvasState) {
+    if (canvasState !== "") {
       const savedImage = new Image();
-      savedImage.src = JSON.parse(savedCanvasState);
+      savedImage.src = JSON.parse(canvasState);
       savedImage.onload = () => {
         const ctx = canvasCur.getContext("2d");
         ctx.clearRect(0, 0, canvasCur.width, canvasCur.height);
         ctx.drawImage(savedImage, 0, 0);
       };
     }
+  },[canvasState]);
+
+  const loadCanvasState = () => {
+    axiosConfig.get("/usertree/2",{
+    }).then(res=>{
+      const imageData = `"${res.data}"`
+      setCanvasState(imageData);
+     }).catch(
+      error=>{console.error("Failed to get user tree:", error);
+    })
   };
 
   let snowmanImageIndex = 0;
-  if (gifts.length >= 5) {
+  // if (gifts.length >= 5) {
+  //   snowmanImageIndex = 1;
+  // }
+  // if (gifts.length >= 10) {
+  //   snowmanImageIndex = 2;
+  // }
+  if (giftBoxCount >= 5) {
     snowmanImageIndex = 1;
   }
-  if (gifts.length >= 10) {
+  if (giftBoxCount >= 10) {
     snowmanImageIndex = 2;
   }
 
@@ -139,10 +136,11 @@ export default function GiftTreeCanvas() {
           height={window.innerHeight}
         />
       </CanvasContainer>
+
       <GiftsWrapper>
         {gifts.map((gift, index) => (
           <motion.div
-          animate={!isReloaded && index === giftBoxCount - 1 ? { scale: [0, 1], rotate: [0, 3, 0, -3, 0, 3, 0, -3, 0] } : {}}
+          animate={!isReloaded && index === giftBoxCount ? { scale: [0, 1], rotate: [0, 3, 0, -3, 0, 3, 0, -3, 0] } : {}}
           key={index}
           >
             <img
@@ -153,8 +151,8 @@ export default function GiftTreeCanvas() {
                 width: "130px",
                 height: "auto",
                 overflow: "visible",
-                zIndex: index+999,
-                marginRight: index === Math.floor(giftBoxCount/ 2 -1) ? "200px" : "-5px"
+                zIndex: index,
+                marginRight: index === Math.floor(giftBoxCount/ 2 ) ? "200px" : "-5px"
               }}
               onClick={()=>{
                 if (currentDate > definedDate) {

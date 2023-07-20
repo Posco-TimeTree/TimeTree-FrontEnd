@@ -4,12 +4,14 @@ import img from '../img/tree.png';
 import GiftTreeCanvas from '../components/GiftTreeCanvas';
 import WriteLetter from '../components/WriteLetter';
 import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
-import {useToggleStore} from "../stores/toggleStore";
+import {useToggleStore} from "../stores";
 import ToggleLight from '../components/ToggleLight';
 import Outside from "../img/outside.jpg";
+import { useUserStore } from '../stores/userStore';
 
 const GiftPage = () => {
-  const [userName, setUserName] = useState("미진");
+  // const [userName, setUserName] = useState("미진");
+  const { user, setUser } = useUserStore();
   // const [modal, setModal] = useState(false);
   // const toggle = () => setModal(!modal);
   const {toggle} = useToggleStore();
@@ -29,7 +31,7 @@ const GiftPage = () => {
 
     {/* <Wrapper backgroundImg={Outside}> */}
     <Wrapper>
-      <Title>{userName}님의 크리스마스 트리</Title>
+      <Title>{user.name}님의 크리스마스 트리</Title>
       <GiftTreeCanvas/>
       {/* <ToggleLight/> */}
     </Wrapper>
@@ -53,7 +55,6 @@ const Title = styled.h1`
   position: absolute;
   display: flex;
   text-align: center;
-  border: 1px solid red;
   top: 5%;
   left: 50%;
   transform: translate(-50%, -50%);

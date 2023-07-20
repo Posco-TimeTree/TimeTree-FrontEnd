@@ -4,6 +4,8 @@ import LoginPage from '../pages/LoginPage';
 import MainPage from '../pages/MainPage';
 import MakeTreePage from '../pages/MakeTreePage';
 import GiftPage from '../pages/GiftPage';
+import OauthRedirect from './OAuthRedirect';
+import PrivateRouter from './PrivateRouter';
 //import ToggleLight from './ToggleLight';
 
 const AppRouter = () => {
@@ -12,12 +14,13 @@ const AppRouter = () => {
       <BrowserRouter>
         <Routes>
           <Route path='/' element={<LoginPage/>}/>
-          <Route path='/main' element={<MainPage/>}/>
-          <Route path='/make-my-tree' element={<MakeTreePage/>}/>
           <Route path='/gift-tree' element={<GiftPage/>}/>
-          {/*<Route path='/test' element={<ToggleLight/>}/>*/}
+          <Route path='/oauth/google/callback' element={<OauthRedirect/>}/>
 
-          {/* <Route path='/oauth/google/callback' element={<OAuthRedirect/>}/> */}
+          <Route element={<PrivateRouter/>}>
+            <Route path='/main' element={<MainPage/>}/>
+            <Route path='/make-my-tree' element={<MakeTreePage/>}/>
+          </Route>
         </Routes>
       </BrowserRouter>
     </div>

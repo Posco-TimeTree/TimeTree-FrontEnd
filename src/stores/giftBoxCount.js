@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 
 export const useGiftBoxCountStore = create((set) => ({
-  giftBoxCount: 5,
-  setGiftBoxCount: ()=> set(state => ({ giftBoxCount: state.giftBoxCount + 1 })),
+  giftBoxCount: 10,
+  setGiftBoxCountPlus: ()=> set(state => ({ giftBoxCount: state.giftBoxCount + 1 })),
 }));

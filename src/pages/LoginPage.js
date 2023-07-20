@@ -4,7 +4,6 @@ import BackgroundImg from "../img/loginImg.jpg";
 import { Link } from 'react-router-dom';
 import {motion} from "framer-motion";
 import { naverAuthUrl } from '../utils/auth/auth';
-import { SiNaver } from 'react-icons/si';
 
 const LoginPage = () => {
   const handleAuthNaver = () => {
@@ -20,7 +19,9 @@ const LoginPage = () => {
           layout: { duration: 0.7 }
         }}>
         <LoginContainer>
-          <LoginTitle>내 <span style={{color:'darkgreen'}}>트리</span>를 꾸며줘</LoginTitle>
+          {/* <LoginTitle>내 <span style={{color:'darkgreen'}}>트리</span>를 꾸며줘</LoginTitle> */}
+          {/* <LoginTitle>포레젠트</LoginTitle> */}
+          <LoginTitle>내 <span style={{color:'darkred'}}>산타</span>가 되어줘</LoginTitle>
           <button onClick={handleAuthNaver}>
             <LoginBox>
               <LoginBtnText>네이버로 로그인하기</LoginBtnText>
@@ -58,11 +59,11 @@ const LoginTitle = styled.div`
 const LoginBox = styled.div`
   margin-top: 10px;
   width: 600px;
-  height: 150px;
+  height: 120px;
   background-color:#e9b000;
   color: white;
   border-radius: 20px;
-  padding-top:40px;
+  padding-top:30px;
   box-sizing: border-box;
   text-align: center;
   box-shadow: 0px 2px 5px gray;
