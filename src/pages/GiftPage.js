@@ -5,7 +5,7 @@ import GiftTreeCanvas from '../components/GiftTreeCanvas';
 import WriteLetter from '../components/WriteLetter';
 import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
 import {useToggleStore} from "../stores/toggleStore";
-// import ToggleLight from '../components/ToggleLight';
+import ToggleLight from '../components/ToggleLight';
 
 const GiftPage = () => {
   const [userName, setUserName] = useState("미진");
@@ -29,6 +29,7 @@ const GiftPage = () => {
     <Wrapper>
       <Title>{userName}님의 크리스마스 트리</Title>
       <GiftTreeCanvas/>
+      <ToggleLight/>
     </Wrapper>
 
     <WriteLetter/>
@@ -62,6 +63,5 @@ const StyledButton = styled(Button)`
   padding: 20px 40px;
   font-size: 1.5rem;
 `;
-
 
 export default GiftPage;

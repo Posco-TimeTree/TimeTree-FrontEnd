@@ -31,7 +31,7 @@ const LoginWapper = styled.div`
   height: 100vh;
   width: 100vw;
   background-repeat : no-repeat;
-  background-size : cover;
+  background-size : 100% 100%;
   display: flex;
   flex-direction: row;
   background-image: url(${(props) => props.backgroundImg});
@@ -40,19 +40,19 @@ const LoginWapper = styled.div`
 const LoginContainer = styled.div`
   padding:10px;
   position: fixed;
-  top: 55%;
+  top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   transition: opacity 0.3s ease-in-out;
 `
 const LoginTitle = styled.div`
   text-align: center;
-  font-size: 100px;
+  font-size: 80px;
 `
 
 const LoginBox = styled.div`
   margin-top: 10px;
-  width: 700px;
+  width: 600px;
   height: 150px;
   background-color:#e9b000;
   color: white;
