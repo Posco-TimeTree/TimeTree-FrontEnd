@@ -8,7 +8,7 @@ import ReactPlayer from 'react-player';
 
 export default function App() {
   const [isPlaying, setIsPlaying] = useState(false);
-  const audioUrl = '../public/IU.mp3';
+  const audioUrl = '/IU.mp3';
   const togglePlay = () => {
     setIsPlaying(!isPlaying);
   };
@@ -17,7 +17,7 @@ export default function App() {
     <>
     <GlobalStyle />
     <div className="App">
-    <PlayButton className={isPlaying ? 'stop-button' : 'play-button'} onClick={togglePlay}>
+      <PlayButton isPlaying={isPlaying} onClick={togglePlay}>
         <img src={require('./img/music.png')} style={{width: "40px"}}/>
       </PlayButton>
       {isPlaying && (
@@ -31,7 +31,9 @@ export default function App() {
   );
 }
 
-const PlayButton = styled.button`
+const PlayButton = styled.button.attrs(props => ({
+  isPlaying: props.isPlaying,
+}))`
   position: absolute;
   top: 50px;
   left: 50px;
