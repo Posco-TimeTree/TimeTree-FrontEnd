@@ -135,7 +135,7 @@ export default function Canvas() {
 }
 
 const Wrapper = styled.div`
-  height: 100vh;
+  // height: 100vh;
   width: 100%;
   display: flex;
   flex-direction: row;
@@ -156,9 +156,10 @@ const CanvasContainer = styled.div`
   background-image: url(${(props) => props.backgroundImg});
   background-position-x: center;
   background-position-y: -130px;
-  background-size: 853px 1280px;
+  // background-size: 853px 1280px;
+  background-size: 700px 1040px;
   background-repeat: no-repeat;
-  background-color: #8aacbf87;
+  // background-color: #8aacbf87;
 `;
 
 const CanvasComponent = styled.canvas`
