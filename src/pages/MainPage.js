@@ -50,19 +50,15 @@ const LoginContainer = styled.div`
   transform: translate(-50%, -50%);
   transition: opacity 0.3s ease-in-out;
 `
-const LoginTitle = styled.div`
-  text-align: center;
-  font-size: 80px;
-`
 
 const LoginBox = styled.div`
   margin-top: 30px;
   width: 600px;
-  height: 150px;
+  height: 120px;
   background-color:#e9b000;
   color: white;
   border-radius: 20px;
-  padding-top:40px;
+  padding-top: 30px;
   box-sizing: border-box;
   text-align: center;
   box-shadow: 0px 2px 5px gray;
