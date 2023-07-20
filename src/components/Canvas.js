@@ -2,8 +2,11 @@ import React, { useRef, useState, useEffect } from "react";
 import styled from "styled-components";
 import SideBar from "./SideBar";
 import Tree from "../img/tree.png";
+import Room from "../img/room.jpg";
 import axios from "axios"
 import axiosConfig from "../utils/api/axiosConfig";
+
+
 export default function Canvas() {
   const canvasRef = useRef(null);
   const [selectedObj, setSelectedObj] = useState("");
@@ -103,6 +106,7 @@ export default function Canvas() {
         }
       }}
     >
+      <Background backgroundImg={Room}>
       <CanvasContainer backgroundImg={Tree}>
         <CanvasComponent
           ref={canvasRef}
@@ -110,6 +114,7 @@ export default function Canvas() {
           height={window.innerHeight}
         />
       </CanvasContainer>
+      </Background>
       <SideBar
         handleSelectedObj={handleSelectedObj}
         handleMousePositionInSideBar={handleMousePositionInSideBar}
@@ -162,5 +167,19 @@ const CanvasContainer = styled.div`
   // background-color: #8aacbf87;
 `;
 
+const Background = styled.div`
+  // position: relative;
+  // // width: calc(100% - 120px);
+  // background-image: url(${(props) => props.backgroundImg});
+  // background-size: cover;
+  // height: 80vh;
+  // width: 100%;
+  // background-position-x: center;
+  // background-position-y: -130px;
+  // // background-size: 853px 1280px;
+  // // background-size: 700px 1040px;
+  // background-repeat: no-repeat;
+  // // background-color: #8aacbf87;
+`;
 const CanvasComponent = styled.canvas`
 `;

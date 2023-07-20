@@ -3,8 +3,13 @@ import styled from 'styled-components';
 import BackgroundImg from "../img/loginImg.jpg";
 import { Link } from 'react-router-dom';
 import {motion} from "framer-motion";
+import { naverAuthUrl } from '../utils/auth/auth';
+import { SiNaver } from 'react-icons/si';
 
 const LoginPage = () => {
+  const handleAuthNaver = () => {
+    window.location.assign(naverAuthUrl);
+  };
   return (
     <LoginWapper backgroundImg={BackgroundImg}>
       <motion.div
@@ -16,11 +21,11 @@ const LoginPage = () => {
         }}>
         <LoginContainer>
           <LoginTitle>내 <span style={{color:'darkgreen'}}>트리</span>를 꾸며줘</LoginTitle>
-          <Link to={"/main"}>
+          <button onClick={handleAuthNaver}>
             <LoginBox>
-              <LoginBtnText>로그인하기</LoginBtnText>
+              <LoginBtnText>네이버로 로그인하기</LoginBtnText>
             </LoginBox>
-          </Link>
+          </button>
         </LoginContainer>
       </motion.div>
     </LoginWapper>

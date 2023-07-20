@@ -1,11 +1,12 @@
 import React, { useRef, useState, useEffect } from "react";
 import styled from "styled-components";
 import Tree from "../img/tree.png";
-import { Card, CardTitle, CardBody, CardText, Button } from 'reactstrap';
+import { Card, CardTitle, CardBody, CardText, Button, Modal, ModalHeader, ModalBody } from 'reactstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import axios from "axios";
 import axiosConfig from '../utils/api/axiosConfig';
 import { motion } from "framer-motion";
+import {useGiftBoxCountStore} from "../stores/giftBoxCount";
 
 const gifts = [
   {
@@ -52,7 +53,17 @@ export default function GiftTreeCanvas() {
   const [selectedObj, setSelectedObj] = useState("");
   const [isOpen, setIsOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [waitingModal, setWaitingModal] = useState(false);
   const [isReloaded, setIsReloaded] = useState(true);
+  const {giftBoxCount} = useGiftBoxCountStore();
+
+  useEffect(()=>{
+    axiosConfig.get("/message")
+    .then(res=>{
+      console.log(res.data);
+    })
+  },[giftBoxCount]);
+
   const [mousePosition, setMousePosition] = useState({
     positionX: null,
     positionY: null,
@@ -131,28 +142,29 @@ export default function GiftTreeCanvas() {
       <GiftsWrapper>
         {gifts.map((gift, index) => (
           <motion.div
-          animate={!isReloaded && index === gifts.length - 1 ? { scale: [0, 1], rotate: [0, 3, 0, -3, 0, 3, 0, -3, 0] } : {}}
+          animate={!isReloaded && index === giftBoxCount - 1 ? { scale: [0, 1], rotate: [0, 3, 0, -3, 0, 3, 0, -3, 0] } : {}}
           key={index}
           >
             <img
               key={index}
               src={giftImages[index]}
+              alt="img"
               style={{
-                width: "140px",
+                width: "130px",
                 height: "auto",
                 overflow: "visible",
-                zIndex: index,
-                marginRight: index === Math.floor(gifts.length/ 2 -1) ? "200px" : "-5px"
+                zIndex: index+999,
+                marginRight: index === Math.floor(giftBoxCount/ 2 -1) ? "200px" : "-5px"
               }}
               onClick={()=>{
                 if (currentDate > definedDate) {
                   selectGift(index);
                 } else {
-                  alert("12/25을 기다려주세요!");
+                  setWaitingModal(true);
                 }
               }}
             />
-            {isOpen && (selectedGift == index) &&  ( // Conditionally render the modal
+            {isOpen && (selectedGift === index) &&  ( // Conditionally render the modal
             <GiftModal>
               <Card body style={{width:"500px"}}>
                 <CardTitle style={{marginBottom: "20px"}} tag="h2">{index+1}번째 편지</CardTitle>
@@ -161,16 +173,26 @@ export default function GiftTreeCanvas() {
               </Card>
             </GiftModal>
           )}
+        
           </motion.div>
         ))}
+
+        {waitingModal && 
+          <Modal isOpen={waitingModal} toggle={()=>{setWaitingModal(!waitingModal)}} centered>
+            <ModalHeader toggle={()=>{setWaitingModal(!waitingModal)}}>Time Tree</ModalHeader>
+            <ModalBody>
+              12월 25일을 기다려주세요!
+            </ModalBody>
+          </Modal>}
+
         <div onClick={()=>setIsReloaded(false)}>dddd</div>
         <SnowmanZone>
-          <img src={require('../img/snowman.png')} style={{width: "300px", height:"auto"}}/>
+          <img src={require('../img/snowman.png')} alt="snowman" style={{width: "300px", height:"auto"}}/>
           {snowmanImageIndex >= 1 && (
-            <img src={require('../img/snowmanLV2.png')} style={{width: "300px", height:"auto", marginTop:"-40px", zIndex:-1}}/>
+            <img src={require('../img/snowmanLV2.png')} alt="snowman" style={{width: "300px", height:"auto", marginTop:"-40px", zIndex:-1}}/>
           )}
           {snowmanImageIndex >= 2 && (
-            <img src={require('../img/snowmanLV3.png')} style={{width: "600px", height:"auto", marginTop:"-30px", marginLeft:"-180px",zIndex:-2}}/>
+            <img src={require('../img/snowmanLV3.png')} alt="snowman" style={{width: "600px", height:"auto", marginTop:"-30px", marginLeft:"-180px",zIndex:-2}}/>
           )}
       </SnowmanZone>
         </GiftsWrapper>
@@ -183,15 +205,6 @@ const Wrapper = styled.div`
   width: 100%;
   display: flex;
   flex-direction: row;
-`;
-
-const SelectedObj = styled.div`
-  width: 100px;
-  height: 100px;
-  background-size: cover;
-  background-image: url(${(props) => props.backgroundImg});
-  transform: translate(-50%, -50%);
-  overflow: visible;
 `;
 
 const CanvasContainer = styled.div`
@@ -217,6 +230,7 @@ const GiftsWrapper = styled.div`
   flex-wrap: wrap-reverse;
   width: 100%;
   margin-left: -30px;
+  z-index: 2;
 `;
 const GiftModal = styled.div`
   position: fixed;
@@ -228,11 +242,12 @@ const GiftModal = styled.div`
 
 const SnowmanZone = styled.div`
   position: fixed;
-  bottom:17%;
-  left: 10%;
+  bottom: 15%;
+  left: 15%;
   display: flex;
   flex-direction: column;
   padding-left : 200px;
+  z-index: 0;
 `
 
 const CanvasComponent = styled.canvas`
