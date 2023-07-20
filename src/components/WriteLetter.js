@@ -4,19 +4,18 @@ import styled from 'styled-components';
 import axiosConfig from '../utils/api/axiosConfig';
 import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
 import {useToggleStore} from "../stores/toggleStore";
+import {useGiftBoxCountStore} from "../stores/giftBoxCount";
 
 const WriteLetter = () => {
   const {isToggled, toggle} = useToggleStore();
   const [message, setMessage] = useState("");
   const [length, setLength] = useState(0);
-
-  // const {message, setMessage} = useMessageStore();
-  // const [modal, setModal] = useState(false);
-  // const toggle = () => setModal(!modal);
+  // const [giftBoxCount, setGiftBoxCount] = useState(5); // db에서 갯수 가져오기(api)
+  const {giftBoxCount, setGiftBoxCount} = useGiftBoxCountStore();
 
   useEffect(()=>{
-    console.log("toggle: ", isToggled);
-  },[isToggled])
+    console.log("box count: ", giftBoxCount);
+  },[giftBoxCount])
 
   const onSubmit = (e) => {
     e.preventDefault();
@@ -24,11 +23,13 @@ const WriteLetter = () => {
     setMessage("");
     toggle();
     setLength(0);
+
     axiosConfig.post("/messages",{
       userId: 1,
       content: message,
     }).then(res=>{
       console.log(res.data);
+      setGiftBoxCount();
     }).catch(err=>{console.log(err)})
   }
   const onChange = (e)=>{
