@@ -5,14 +5,12 @@ import axiosConfig from '../utils/api/axiosConfig';
 import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
 import {useToggleStore, useUserStore} from "../stores";
 import {useGiftBoxCountStore} from "../stores/giftBoxCount";
-import ModalCom from './ModalCom';
 
 const WriteLetter = () => {
   const {isToggled, toggle} = useToggleStore();
   const {user} = useUserStore();
   const [message, setMessage] = useState("");
   const [length, setLength] = useState(0);
-  // const [giftBoxCount, setGiftBoxCount] = useState(5); // db에서 갯수 가져오기(api)
   const {giftBoxCount, setGiftBoxCountPlus} = useGiftBoxCountStore();
 
   useEffect(()=>{

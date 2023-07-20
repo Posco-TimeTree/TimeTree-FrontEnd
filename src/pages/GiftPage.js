@@ -44,7 +44,6 @@ const GiftPage = () => {
 
 const Wrapper = styled.div`
   position: relative;
-  width: calc(100% - 120px);
   background-image: url(${(props) => props.backgroundImg});
   background-position-x: center;
   background-position-y: -130px;
@@ -66,7 +65,7 @@ const ButtonWrapper = styled.div`
   position: absolute;
   top: 95%;
   left: 50%;
-  transform: translate(-85%, -50%);
+  transform: translate(-50%, -50%);
 `;
 
 const StyledButton = styled(Button)`

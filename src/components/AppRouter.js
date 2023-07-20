@@ -17,6 +17,7 @@ const AppRouter = () => {
           <Route path='/' element={<LoginPage/>}/>
           <Route path='/gift-tree' element={<GiftPage/>}/>
           <Route path='/oauth/google/callback' element={<OauthRedirect/>}/>
+          <Route path='/ad' elemen={<AdVideoPlayer/>}/>
 
           <Route element={<PrivateRouter/>}>
             <Route path='/main' element={<MainPage/>}/>
@@ -24,7 +25,6 @@ const AppRouter = () => {
             <Route path='/three' element={<ThreeExample/>}/>
           </Route>
         </Routes>
-        <Route path='/ad' elemen={<AdVideoPlayer/>}/>
       </BrowserRouter>
     </div>
   );

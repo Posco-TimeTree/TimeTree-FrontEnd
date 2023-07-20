@@ -179,7 +179,7 @@ const CanvasContainer = styled.div`
   // background-size: 853px 1280px;
   background-size: 700px 1040px;
   background-repeat: no-repeat;
-  // background-color: #8aacbf87;
+  background-color: #8aacbf87;
   // z-index: 2;
 `;
 const ButtonWrapper = styled.div`
@@ -187,7 +187,7 @@ const ButtonWrapper = styled.div`
   position: absolute;
   top: 95%;
   left: 50%;
-  transform: translate(-85%, -50%);
+  transform: translate(-75%, -70%);
 `;
 const StyledButton = styled(Button)`
   padding: 20px 40px;

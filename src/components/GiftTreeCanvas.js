@@ -1,7 +1,7 @@
 import React, { useRef, useState, useEffect } from "react";
 import styled from "styled-components";
 import Tree from "../img/tree.png";
-import { Card, CardTitle, CardBody, CardText, Button, Modal, ModalHeader, ModalBody } from 'reactstrap';
+import { Card, CardTitle, CardText, Button } from 'reactstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import axiosConfig from '../utils/api/axiosConfig';
 import { motion } from "framer-motion";
@@ -141,7 +141,8 @@ export default function GiftTreeCanvas() {
                 height: "auto",
                 overflow: "visible",
                 zIndex: index,
-                marginRight: index === Math.floor(length/ 2 ) ? "200px" : "-5px"
+                marginRight: index === Math.floor(length/ 2 -1) ? "200px" : "-5px",
+                // marginTop: "-8px"
               }}
               onClick={() => {
                 if (currentDate > definedDate) {
@@ -168,8 +169,8 @@ export default function GiftTreeCanvas() {
           <ModalCom isOpen={waitingModal} toggle={() => setWaitingModal(!waitingModal)} body={"12월 25일을 기다려주세요!"}/>}
         
         <SnowmanZone>
-          <Link to="/three">
-            <img src={require('../img/snowman.png')} alt="snowman" style={{ width: "300px", height: "auto" }} />
+          <Link to="/three" style={{ width: "fit-content"}}>
+            <img src={require('../img/snowman.png')} alt="snowman" style={{ width: "280px", height: "auto"}} />
           </Link>
           {snowmanImageIndex >= 1 && (
             <img src={require('../img/snowmanLV2.png')} alt="snowman" style={{ width: "300px", height: "auto", marginTop: "-40px", zIndex: -1 }} />
@@ -184,22 +185,22 @@ export default function GiftTreeCanvas() {
 }
 
 const Wrapper = styled.div`
-  // height: 100vh;
-  width: 100%;
+  height: 100vh;
+  width: 100vw;
   display: flex;
   flex-direction: row;
 `;
 
 const CanvasContainer = styled.div`
   position: relative;
-  width: 100%;
+  width: 100vw;
   background-image: url(${(props) => props.backgroundImg});
   background-position-x: center;
   background-position-y: -130px;
   // background-size: 853px 1280px;
   background-size: 700px 1040px;
   background-repeat: no-repeat;
-  // background-color: #8aacbf87;
+  background-color: #8aacbf87;
 `;
 const GiftsWrapper = styled.div`
   position: absolute;
@@ -211,9 +212,11 @@ const GiftsWrapper = styled.div`
   align-items: flex-start;
   margin-top: 550px;
   flex-wrap: wrap-reverse;
-  width: 100%;
-  margin-left: -30px;
+  width: 95%;
+  // margin: 0 auto;
+  margin-left: 50px;
   z-index: 2;
+  // border: 2px solid blue;
 `;
 const GiftModal = styled.div`
   position: fixed;
