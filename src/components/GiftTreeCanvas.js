@@ -51,6 +51,7 @@ export default function GiftTreeCanvas() {
   const canvasRef = useRef(null);
   const [selectedObj, setSelectedObj] = useState("");
   const [isOpen, setIsOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [isReloaded, setIsReloaded] = useState(true);
   const [mousePosition, setMousePosition] = useState({
     positionX: null,
@@ -63,14 +64,17 @@ export default function GiftTreeCanvas() {
     toggle(); // Open the modal
   };
 
+  //버그: 월이 +1로 해서 계산됨
+  const definedDate = new Date(2023, 6, 21, 9, 30);
+  // 현재 날짜와 시간 가져오기
+  const currentDate = new Date();
+
   useEffect(() => {
     // 컴포넌트 마운트 시 저장된 Canvas 상태를 로드하여 복원합니다.
     loadCanvasState();
     setIsReloaded(true);
+    console.log(currentDate);
   }, []);
-
-
-  
 
   const loadCanvasState = () => {
     const canvasCur = canvasRef.current;
@@ -132,7 +136,13 @@ export default function GiftTreeCanvas() {
                 zIndex: index,
                 marginRight: index === Math.floor(gifts.length/ 2 -1) ? "200px" : "-5px"
               }}
-              onClick={()=>selectGift(index)}
+              onClick={()=>{
+                if (currentDate > definedDate) {
+                  selectGift(index);
+                } else {
+                  alert("12/25을 기다려주세요!");
+                }
+              }}
             />
             {isOpen && (selectedGift == index) &&  ( // Conditionally render the modal
             <GiftModal>
