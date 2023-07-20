@@ -29,7 +29,7 @@ const GiftPage = () => {
     <Wrapper>
       <Title>{userName}님의 크리스마스 트리</Title>
       <GiftTreeCanvas/>
-      <ToggleLight/>
+      {/* <ToggleLight/> */}
     </Wrapper>
 
     <WriteLetter/>
