@@ -216,7 +216,7 @@ const CanvasContainer = styled.div`
   // background-size: 853px 1280px;
   background-size: 700px 1040px;
   background-repeat: no-repeat;
-  background-color: #8aacbf87;
+  // background-color: #8aacbf87;
 `;
 const GiftsWrapper = styled.div`
   position: absolute;
@@ -243,11 +243,11 @@ const GiftModal = styled.div`
 const SnowmanZone = styled.div`
   position: fixed;
   bottom: 15%;
-  left: 15%;
+  left: 10%;
   display: flex;
   flex-direction: column;
   padding-left : 200px;
-  z-index: 0;
+  z-index: -10;
 `
 
 const CanvasComponent = styled.canvas`
