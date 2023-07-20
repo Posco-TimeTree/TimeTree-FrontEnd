@@ -5,9 +5,10 @@ import { Card, CardTitle, CardBody, CardText, Button, Modal, ModalHeader, ModalB
 import 'bootstrap/dist/css/bootstrap.min.css';
 import axiosConfig from '../utils/api/axiosConfig';
 import { motion } from "framer-motion";
-import {useGiftBoxCountStore} from "../stores/giftBoxCount";
+import { useGiftBoxCountStore } from "../stores/giftBoxCount";
 import { Link } from "react-router-dom";
 import { useUserStore } from "../stores";
+import Snowfall from 'react-snowfall';
 
 const images = [
   require("../img/giftBox1.png"),
@@ -20,8 +21,6 @@ const getRandomImage = () => {
   return images[randomIndex];
 };
 
-// const giftImages = gifts.map(() => getRandomImage());
-
 export default function GiftTreeCanvas() {
   const canvasRef = useRef(null);
   const [selectedObj, setSelectedObj] = useState("");
@@ -29,8 +28,8 @@ export default function GiftTreeCanvas() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [waitingModal, setWaitingModal] = useState(false);
   const [isReloaded, setIsReloaded] = useState(true);
-  const {giftBoxCount} = useGiftBoxCountStore();
-  const {user} = useUserStore();
+  const { giftBoxCount } = useGiftBoxCountStore();
+  const { user } = useUserStore();
   const [gifts, setGifts] = useState([]);
   const giftImages = gifts.map(() => getRandomImage());
 
@@ -38,8 +37,8 @@ export default function GiftTreeCanvas() {
     positionX: null,
     positionY: null,
   });
-  const [selectedGift, setSelectedGift] = useState(null); 
-  const toggle = () => setIsOpen(!isOpen); 
+  const [selectedGift, setSelectedGift] = useState(null);
+  const toggle = () => setIsOpen(!isOpen);
   const selectGift = (index) => {
     setSelectedGift(index); // Set the selected gift index
     toggle(); // Open the modal
@@ -50,12 +49,12 @@ export default function GiftTreeCanvas() {
   // 현재 날짜와 시간 가져오기
   const currentDate = new Date();
 
-  const getMessages = ()=>{
+  const getMessages = () => {
     axiosConfig.get(`/messages/${user.id}`)
-    .then(res=>{
-      console.log("message: ",res);
-      setGifts(res.data);
-    })
+      .then(res => {
+        console.log("message: ", res);
+        setGifts(res.data);
+      })
   }
 
   const [canvasState, setCanvasState] = useState("");
@@ -65,11 +64,11 @@ export default function GiftTreeCanvas() {
     setIsReloaded(true);
     getMessages();
   }, []);
-  useEffect(()=>{
+  useEffect(() => {
     getMessages();
-  },[giftBoxCount]);
+  }, [giftBoxCount]);
 
-  useEffect(()=>{
+  useEffect(() => {
     const canvasCur = canvasRef.current;
     if (canvasState !== "") {
       const savedImage = new Image();
@@ -80,16 +79,17 @@ export default function GiftTreeCanvas() {
         ctx.drawImage(savedImage, 0, 0);
       };
     }
-  },[canvasState]);
+  }, [canvasState]);
 
   const loadCanvasState = () => {
-    axiosConfig.get(`/usertree/${user.id}`,{
-    }).then(res=>{
+    axiosConfig.get(`/usertree/${user.id}`, {
+    }).then(res => {
       const imageData = `"${res.data}"`
       setCanvasState(imageData);
-     }).catch(
-      error=>{console.error("Failed to get user tree:", error);
-    })
+    }).catch(
+      error => {
+        console.error("Failed to get user tree:", error);
+      })
   };
 
   let snowmanImageIndex = 0;
@@ -118,13 +118,14 @@ export default function GiftTreeCanvas() {
           width={window.innerWidth}
           height={window.innerHeight}
         />
+        <Snowfall snowflakeCount={200} style={{ pointerEvents: "none" }} />
       </CanvasContainer>
 
       <GiftsWrapper>
         {gifts.map((gift, index) => (
           <motion.div
-          animate={!isReloaded && index === gifts.length ? { scale: [0, 1], rotate: [0, 3, 0, -3, 0, 3, 0, -3, 0] } : {}}
-          key={index}
+            animate={!isReloaded && index === gifts.length ? { scale: [0, 1], rotate: [0, 3, 0, -3, 0, 3, 0, -3, 0] } : {}}
+            key={index}
           >
             <img
               key={index}
@@ -135,9 +136,9 @@ export default function GiftTreeCanvas() {
                 height: "auto",
                 overflow: "visible",
                 zIndex: index,
-                marginRight: index === Math.floor(gifts.length/ 2 ) ? "200px" : "-5px"
+                marginRight: index === Math.floor(gifts.length / 2) ? "200px" : "-5px"
               }}
-              onClick={()=>{
+              onClick={() => {
                 if (currentDate > definedDate) {
                   selectGift(index);
                 } else {
@@ -145,41 +146,41 @@ export default function GiftTreeCanvas() {
                 }
               }}
             />
-            {isOpen && (selectedGift === index) &&  ( // Conditionally render the modal
-            <GiftModal>
-              <Card body style={{width:"500px"}}>
-                <CardTitle style={{marginBottom: "20px"}} tag="h2">{index+1}번째 편지</CardTitle>
-                <CardText style={{marginBottom: "30px"}} tag="h3">{gift.content}</CardText>
-                <Button onClick={toggle} color="success">확인</Button>
-              </Card>
-            </GiftModal>
-          )}
-        
+            {isOpen && (selectedGift === index) && ( // Conditionally render the modal
+              <GiftModal>
+                <Card body style={{ width: "500px" }}>
+                  <CardTitle style={{ marginBottom: "20px" }} tag="h2">{index + 1}번째 편지</CardTitle>
+                  <CardText style={{ marginBottom: "30px" }} tag="h3">{gift.content}</CardText>
+                  <Button onClick={toggle} color="success">확인</Button>
+                </Card>
+              </GiftModal>
+            )}
+
           </motion.div>
         ))}
 
-        {waitingModal && 
-          <Modal isOpen={waitingModal} toggle={()=>{setWaitingModal(!waitingModal)}} centered>
-            <ModalHeader toggle={()=>{setWaitingModal(!waitingModal)}}>Time Tree</ModalHeader>
+        {waitingModal &&
+          <Modal isOpen={waitingModal} toggle={() => { setWaitingModal(!waitingModal) }} centered>
+            <ModalHeader toggle={() => { setWaitingModal(!waitingModal) }}>Time Tree</ModalHeader>
             <ModalBody>
               12월 25일을 기다려주세요!
             </ModalBody>
           </Modal>}
 
-        <div onClick={()=>setIsReloaded(false)}>dddd</div>
+        <div onClick={() => setIsReloaded(false)}>dddd</div>
         <SnowmanZone>
           <Link to="/three">
-            <img src={require('../img/snowman.png')} alt="snowman" style={{width: "300px", height:"auto"}}/>
+            <img src={require('../img/snowman.png')} alt="snowman" style={{ width: "300px", height: "auto" }} />
           </Link>
           {snowmanImageIndex >= 1 && (
-            <img src={require('../img/snowmanLV2.png')} alt="snowman" style={{width: "300px", height:"auto", marginTop:"-40px", zIndex:-1}}/>
+            <img src={require('../img/snowmanLV2.png')} alt="snowman" style={{ width: "300px", height: "auto", marginTop: "-40px", zIndex: -1 }} />
           )}
           {snowmanImageIndex >= 2 && (
-            <img src={require('../img/snowmanLV3.png')} alt="snowman" style={{width: "600px", height:"auto", marginTop:"-30px", marginLeft:"-180px",zIndex:-2}}/>
+            <img src={require('../img/snowmanLV3.png')} alt="snowman" style={{ width: "600px", height: "auto", marginTop: "-30px", marginLeft: "-180px", zIndex: -2 }} />
           )}
-      </SnowmanZone>
-        </GiftsWrapper>
-      </Wrapper>
+        </SnowmanZone>
+      </GiftsWrapper>
+    </Wrapper>
   );
 }
 
