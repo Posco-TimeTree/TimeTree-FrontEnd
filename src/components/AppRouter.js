@@ -17,14 +17,13 @@ const AppRouter = () => {
           <Route path='/' element={<LoginPage/>}/>
           <Route path='/gift-tree' element={<GiftPage/>}/>
           <Route path='/oauth/google/callback' element={<OauthRedirect/>}/>
-
+          <Route path='/ad' element={<AdVideoPlayer/>}/>
           <Route element={<PrivateRouter/>}>
             <Route path='/main' element={<MainPage/>}/>
             <Route path='/make-my-tree' element={<MakeTreePage/>}/>
             <Route path='/three' element={<ThreeExample/>}/>
           </Route>
         </Routes>
-        <Route path='/ad' elemen={<AdVideoPlayer/>}/>
       </BrowserRouter>
     </div>
   );
