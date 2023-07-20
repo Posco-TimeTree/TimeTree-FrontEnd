@@ -4,7 +4,6 @@ import { Environment, OrbitControls } from "@react-three/drei";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 import { Suspense } from "react";
 import styled from "styled-components";
-import * as THREE from "three";
 import { TextureLoader } from "three";
 
 const Model = () => {
@@ -25,7 +24,7 @@ const Model = () => {
   );
 };
 
-export default function App() {
+export default function ThreeExample() {
   return (
     <CanvasWrapper>
       <Canvas>

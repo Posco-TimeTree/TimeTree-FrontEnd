@@ -3,38 +3,12 @@ import styled from "styled-components";
 import Tree from "../img/tree.png";
 import { Card, CardTitle, CardBody, CardText, Button, Modal, ModalHeader, ModalBody } from 'reactstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import axios from "axios";
 import axiosConfig from '../utils/api/axiosConfig';
 import { motion } from "framer-motion";
 import {useGiftBoxCountStore} from "../stores/giftBoxCount";
+import { Link } from "react-router-dom";
+import { useUserStore } from "../stores";
 
-const gifts = [
-  {
-    boxId: 0,
-    treeId: 0,
-    content: "메리 클스마스~~~"
-  },{
-    boxId: 1,
-    treeId: 0,
-    content: "사실 너를 좋아했어.."
-  },{
-    boxId: 2,
-    treeId: 0,
-    content: "그만 나대"
-  },{
-    boxId: 3,
-    treeId: 0,
-    content: "아 배고파"
-  },{
-    boxId: 4,
-    treeId: 0,
-    content: "올 한 해 동안 고생 많았다!"
-  },{
-    boxId: 5,
-    treeId: 0,
-    content: "이런 거 왜 함? 초딩같애"
-  }
-];
 const images = [
   require("../img/giftBox1.png"),
   require("../img/giftBox2.png"),
@@ -46,7 +20,7 @@ const getRandomImage = () => {
   return images[randomIndex];
 };
 
-const giftImages = gifts.map(() => getRandomImage());
+// const giftImages = gifts.map(() => getRandomImage());
 
 export default function GiftTreeCanvas() {
   const canvasRef = useRef(null);
@@ -56,6 +30,9 @@ export default function GiftTreeCanvas() {
   const [waitingModal, setWaitingModal] = useState(false);
   const [isReloaded, setIsReloaded] = useState(true);
   const {giftBoxCount} = useGiftBoxCountStore();
+  const {user} = useUserStore();
+  const [gifts, setGifts] = useState([]);
+  const giftImages = gifts.map(() => getRandomImage());
 
   const [mousePosition, setMousePosition] = useState({
     positionX: null,
@@ -73,12 +50,24 @@ export default function GiftTreeCanvas() {
   // 현재 날짜와 시간 가져오기
   const currentDate = new Date();
 
+  const getMessages = ()=>{
+    axiosConfig.get(`/messages/${user.id}`)
+    .then(res=>{
+      console.log("message: ",res);
+      setGifts(res.data);
+    })
+  }
+
   const [canvasState, setCanvasState] = useState("");
   useEffect(() => {
     // 컴포넌트 마운트 시 저장된 Canvas 상태를 로드하여 복원합니다.
     loadCanvasState();
     setIsReloaded(true);
+    getMessages();
   }, []);
+  useEffect(()=>{
+    getMessages();
+  },[giftBoxCount]);
 
   useEffect(()=>{
     const canvasCur = canvasRef.current;
@@ -94,7 +83,7 @@ export default function GiftTreeCanvas() {
   },[canvasState]);
 
   const loadCanvasState = () => {
-    axiosConfig.get("/usertree/2",{
+    axiosConfig.get(`/usertree/${user.id}`,{
     }).then(res=>{
       const imageData = `"${res.data}"`
       setCanvasState(imageData);
@@ -104,16 +93,10 @@ export default function GiftTreeCanvas() {
   };
 
   let snowmanImageIndex = 0;
-  // if (gifts.length >= 5) {
-  //   snowmanImageIndex = 1;
-  // }
-  // if (gifts.length >= 10) {
-  //   snowmanImageIndex = 2;
-  // }
-  if (giftBoxCount >= 5) {
+  if (gifts.length >= 5) {
     snowmanImageIndex = 1;
   }
-  if (giftBoxCount >= 10) {
+  if (gifts.length >= 10) {
     snowmanImageIndex = 2;
   }
 
@@ -140,7 +123,7 @@ export default function GiftTreeCanvas() {
       <GiftsWrapper>
         {gifts.map((gift, index) => (
           <motion.div
-          animate={!isReloaded && index === giftBoxCount ? { scale: [0, 1], rotate: [0, 3, 0, -3, 0, 3, 0, -3, 0] } : {}}
+          animate={!isReloaded && index === gifts.length ? { scale: [0, 1], rotate: [0, 3, 0, -3, 0, 3, 0, -3, 0] } : {}}
           key={index}
           >
             <img
@@ -152,7 +135,7 @@ export default function GiftTreeCanvas() {
                 height: "auto",
                 overflow: "visible",
                 zIndex: index,
-                marginRight: index === Math.floor(giftBoxCount/ 2 ) ? "200px" : "-5px"
+                marginRight: index === Math.floor(gifts.length/ 2 ) ? "200px" : "-5px"
               }}
               onClick={()=>{
                 if (currentDate > definedDate) {
@@ -185,7 +168,9 @@ export default function GiftTreeCanvas() {
 
         <div onClick={()=>setIsReloaded(false)}>dddd</div>
         <SnowmanZone>
-          <img src={require('../img/snowman.png')} alt="snowman" style={{width: "300px", height:"auto"}}/>
+          <Link to="/three">
+            <img src={require('../img/snowman.png')} alt="snowman" style={{width: "300px", height:"auto"}}/>
+          </Link>
           {snowmanImageIndex >= 1 && (
             <img src={require('../img/snowmanLV2.png')} alt="snowman" style={{width: "300px", height:"auto", marginTop:"-40px", zIndex:-1}}/>
           )}

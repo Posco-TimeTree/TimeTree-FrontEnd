@@ -6,7 +6,6 @@ import MakeTreePage from '../pages/MakeTreePage';
 import GiftPage from '../pages/GiftPage';
 import OauthRedirect from './OAuthRedirect';
 import PrivateRouter from './PrivateRouter';
-//import ToggleLight from './ToggleLight';
 import ThreeExample from '../pages/ThreeExample';
 
 const AppRouter = () => {
@@ -21,6 +20,7 @@ const AppRouter = () => {
           <Route element={<PrivateRouter/>}>
             <Route path='/main' element={<MainPage/>}/>
             <Route path='/make-my-tree' element={<MakeTreePage/>}/>
+            <Route path='/three' element={<ThreeExample/>}/>
           </Route>
         </Routes>
       </BrowserRouter>
