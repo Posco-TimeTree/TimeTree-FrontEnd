@@ -9,6 +9,7 @@ import { useGiftBoxCountStore } from "../stores/giftBoxCount";
 import { Link } from "react-router-dom";
 import { useUserStore } from "../stores";
 import Snowfall from 'react-snowfall';
+import ModalCom from "./ModalCom";
 
 const images = [
   require("../img/giftBox1.png"),
@@ -28,8 +29,8 @@ export default function GiftTreeCanvas() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [waitingModal, setWaitingModal] = useState(false);
   const [isReloaded, setIsReloaded] = useState(true);
-  const { giftBoxCount } = useGiftBoxCountStore();
-  const { user } = useUserStore();
+  const {giftBoxCount, setGiftBoxCount} = useGiftBoxCountStore();
+  const {user} = useUserStore();
   const [gifts, setGifts] = useState([]);
   const giftImages = gifts.map(() => getRandomImage());
 
@@ -45,7 +46,7 @@ export default function GiftTreeCanvas() {
   };
 
   //버그: 월이 +1로 해서 계산됨
-  const definedDate = new Date(2023, 6, 21, 9, 30);
+  const definedDate = new Date(2023, 5, 22, 9, 30); 
   // 현재 날짜와 시간 가져오기
   const currentDate = new Date();
 
@@ -63,8 +64,10 @@ export default function GiftTreeCanvas() {
     loadCanvasState();
     setIsReloaded(true);
     getMessages();
+    setGiftBoxCount(gifts.length);
   }, []);
-  useEffect(() => {
+
+  useEffect(()=>{
     getMessages();
   }, [giftBoxCount]);
 
@@ -122,10 +125,12 @@ export default function GiftTreeCanvas() {
       </CanvasContainer>
 
       <GiftsWrapper>
-        {gifts.map((gift, index) => (
+        {gifts.map((gift, index) => {
+          const length = giftBoxCount > gifts.length ? giftBoxCount : gifts.length;
+        return(
           <motion.div
-            animate={!isReloaded && index === gifts.length ? { scale: [0, 1], rotate: [0, 3, 0, -3, 0, 3, 0, -3, 0] } : {}}
-            key={index}
+          animate={{ scale: [0, 1], rotate: [0, 3, 0, -3, 0, 3, 0, -3, 0] }}
+          key={index}
           >
             <img
               key={index}
@@ -136,7 +141,7 @@ export default function GiftTreeCanvas() {
                 height: "auto",
                 overflow: "visible",
                 zIndex: index,
-                marginRight: index === Math.floor(gifts.length / 2) ? "200px" : "-5px"
+                marginRight: index === Math.floor(length/ 2 ) ? "200px" : "-5px"
               }}
               onClick={() => {
                 if (currentDate > definedDate) {
@@ -157,17 +162,11 @@ export default function GiftTreeCanvas() {
             )}
 
           </motion.div>
-        ))}
+        )})}
 
-        {waitingModal &&
-          <Modal isOpen={waitingModal} toggle={() => { setWaitingModal(!waitingModal) }} centered>
-            <ModalHeader toggle={() => { setWaitingModal(!waitingModal) }}>Time Tree</ModalHeader>
-            <ModalBody>
-              12월 25일을 기다려주세요!
-            </ModalBody>
-          </Modal>}
-
-        <div onClick={() => setIsReloaded(false)}>dddd</div>
+        {waitingModal && 
+          <ModalCom isOpen={waitingModal} toggle={() => setWaitingModal(!waitingModal)} body={"12월 25일을 기다려주세요!"}/>}
+        
         <SnowmanZone>
           <Link to="/three">
             <img src={require('../img/snowman.png')} alt="snowman" style={{ width: "300px", height: "auto" }} />

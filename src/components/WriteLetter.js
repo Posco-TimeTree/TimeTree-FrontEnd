@@ -5,6 +5,7 @@ import axiosConfig from '../utils/api/axiosConfig';
 import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
 import {useToggleStore, useUserStore} from "../stores";
 import {useGiftBoxCountStore} from "../stores/giftBoxCount";
+import ModalCom from './ModalCom';
 
 const WriteLetter = () => {
   const {isToggled, toggle} = useToggleStore();
@@ -26,7 +27,7 @@ const WriteLetter = () => {
     setLength(0);
 
     axiosConfig.post("/messages",{
-      userId: 1,
+      userId: 2,
       content: message,
     }).then(res=>{
       console.log(res.data);
@@ -38,8 +39,14 @@ const WriteLetter = () => {
     setMessage(value);
     setLength(value.length);
   }
+  // const handleSubmit = ()=>{
+  //   return(
+
+  //   )
+  // }
   return (
     <Wrapper>
+      {/* <ModalCom isOpen={isToggled} toggle={toggle} size={"lg"} body={handleSubmit}/> */}
       <Modal isOpen={isToggled} toggle={toggle} centered size={"lg"}>
         <ModalHeader toggle={toggle}>To. {user.name}</ModalHeader>
         <ModalBody>
