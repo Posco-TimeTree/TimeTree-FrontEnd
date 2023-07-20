@@ -101,6 +101,14 @@ export default function GiftTreeCanvas() {
     }
   };
 
+  let snowmanImageIndex = 0;
+  if (gifts.length >= 5) {
+    snowmanImageIndex = 1;
+  }
+  if (gifts.length >= 10) {
+    snowmanImageIndex = 2;
+  }
+
   return (
     <Wrapper
       onMouseMove={(e) => {
@@ -156,8 +164,17 @@ export default function GiftTreeCanvas() {
           </motion.div>
         ))}
         <div onClick={()=>setIsReloaded(false)}>dddd</div>
-      </GiftsWrapper>
-    </Wrapper>
+        <SnowmanZone>
+          <img src={require('../img/snowman.png')} style={{width: "300px", height:"auto"}}/>
+          {snowmanImageIndex >= 1 && (
+            <img src={require('../img/snowmanLV2.png')} style={{width: "300px", height:"auto", marginTop:"-40px", zIndex:-1}}/>
+          )}
+          {snowmanImageIndex >= 2 && (
+            <img src={require('../img/snowmanLV3.png')} style={{width: "600px", height:"auto", marginTop:"-30px", marginLeft:"-180px",zIndex:-2}}/>
+          )}
+      </SnowmanZone>
+        </GiftsWrapper>
+      </Wrapper>
   );
 }
 
@@ -207,6 +224,15 @@ const GiftModal = styled.div`
   left: 50%;
   transform: translate(-50%, -50%);
   transition: opacity 0.3s ease-in-out;
+`
+
+const SnowmanZone = styled.div`
+  position: fixed;
+  bottom:17%;
+  left: 10%;
+  display: flex;
+  flex-direction: column;
+  padding-left : 200px;
 `
 
 const CanvasComponent = styled.canvas`
