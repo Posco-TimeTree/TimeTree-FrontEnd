@@ -17,7 +17,7 @@ const images = [
   require("../img/giftBox3.png")
 ];
 
-export default function GiftTreeCanvas() {
+export default function GiftTreeCanvas({userId}) {
   const canvasRef = useRef(null);
   const [selectedObj, setSelectedObj] = useState("");
   const [isOpen, setIsOpen] = useState(false);
