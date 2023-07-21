@@ -17,7 +17,7 @@ const images = [
   require("../img/giftBox3.png")
 ];
 
-export default function GiftTreeCanvas() {
+export default function GiftTreeCanvas({userId}) {
   const canvasRef = useRef(null);
   const [selectedObj, setSelectedObj] = useState("");
   const [isOpen, setIsOpen] = useState(false);
@@ -25,7 +25,9 @@ export default function GiftTreeCanvas() {
   const [waitingModal, setWaitingModal] = useState(false);
   const [isReloaded, setIsReloaded] = useState(true);
   const {giftBoxCount, setGiftBoxCount} = useGiftBoxCountStore();
-  const {user} = useUserStore();
+  // const {user} = useUserStore();
+  console.log("canvas: ",userId);
+
   const [gifts, setGifts] = useState([]);
   const imageOrder = [3, 2, 1, 2, 2, 3, 3, 2, 1, 1];
   const giftImages = gifts.map((gift, index) => {
@@ -51,7 +53,7 @@ export default function GiftTreeCanvas() {
   const currentDate = new Date();
 
   const getMessages = () => {
-    axiosConfig.get(`/messages/${user.id}`)
+    axiosConfig.get(`/messages/${userId}`)
       .then(res => {
         console.log("message: ", res);
         setGifts(res.data);
@@ -86,7 +88,7 @@ export default function GiftTreeCanvas() {
   }, [canvasState]);
 
   const loadCanvasState = () => {
-    axiosConfig.get(`/usertree/${user.id}`, {
+    axiosConfig.get(`/usertree/${userId}`, {
     }).then(res => {
       const imageData = `"${res.data}"`
       setCanvasState(imageData);
