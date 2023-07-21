@@ -6,7 +6,13 @@ import {motion} from "framer-motion";
 import styled from 'styled-components';
 import BackgroundImg from "../img/loginImg.jpg";
 import { LoginBox, LoginBtnText, LoginContainer, LoginWapper } from '../styles/MainBackground';
+import { useUserStore } from '../stores';
+import { getCookie } from '../utils/auth/cookies';
 const MainPage = () => {
+  const {user} = useUserStore();
+  console.log("main: ", user);
+  getCookie("token");
+  
   return (
     <LoginWapper backgroundImg={BackgroundImg}>
       <motion.div

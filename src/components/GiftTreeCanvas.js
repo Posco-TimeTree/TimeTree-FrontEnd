@@ -105,7 +105,13 @@ export default function GiftTreeCanvas({userId}) {
   if (gifts.length >= 10) {
     snowmanImageIndex = 2;
   }
-
+  const onClickImg = ({index}) => {
+    if (currentDate > definedDate) {
+      selectGift(index);
+    } else {
+      setWaitingModal(true);
+    }
+  }
   return (
     <Wrapper
       onMouseMove={(e) => {
@@ -147,13 +153,7 @@ export default function GiftTreeCanvas({userId}) {
                 marginRight: index === Math.floor(length/ 2 -1) ? "200px" : "-5px",
                 // marginTop: "-8px"
               }}
-              onClick={() => {
-                if (currentDate > definedDate) {
-                  selectGift(index);
-                } else {
-                  setWaitingModal(true);
-                }
-              }}
+              onClick={() => {onClickImg(index)}}
             />
             {isOpen && (selectedGift === index) && ( // Conditionally render the modal
               <GiftModal>

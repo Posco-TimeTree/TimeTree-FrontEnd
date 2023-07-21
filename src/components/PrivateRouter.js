@@ -2,21 +2,31 @@ import React, { useEffect, useState } from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
 import { Button } from 'reactstrap';
 import styled from 'styled-components';
+import { useUserStore } from '../stores';
+import { deleteCookie, getCookie } from '../utils/auth/cookies';
 import ModalCom from './ModalCom';
 
 const PrivateRouter = ({children}) => {
-  const token = localStorage.getItem("refresh_token");
+  const token = getCookie("token");
   const [logout, setLogout] = useState(false);
+  const {setUser} = useUserStore();
   const navigate = useNavigate();
-  // if(!token){
-  //   setTimeout(()=>navigate(-1),1000);
-  // }
-  // const [toggle, setToggle] = useState(true);
+  if(!token){
+    setTimeout(()=>navigate(-1), 500);
+  }
+
   const toggle = ()=>setLogout(false);
+
   useEffect(()=>{
     if(logout){
       setTimeout(() => {
         setLogout(false);
+        deleteCookie("token");
+        setUser({
+          userId: 0,
+          name: "",
+          email: "",
+        });
         navigate("/main");
       }, 1500);
     }
