@@ -1,5 +1,6 @@
 import React from 'react';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { Route, Routes,useLocation } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import LoginPage from '../pages/LoginPage';
 import MainPage from '../pages/MainPage';
 import MakeTreePage from '../pages/MakeTreePage';
@@ -8,24 +9,33 @@ import OauthRedirect from './OAuthRedirect';
 import PrivateRouter from './PrivateRouter';
 import ThreeExample from '../pages/ThreeExample';
 import AdVideoPlayer from './AdVideoPlayer';
+import { TransitionGroup, CSSTransition } from 'react-transition-group';
+import "../pageAnimation.css";
 
 const AppRouter = () => {
+  const location = useLocation();
+    
   return (
     <div>
-      <BrowserRouter>
-        <Routes>
+      <TransitionGroup  className="transitions-wrapper">
+      <CSSTransition
+        key={location.pathname}
+        classNames={"right"}
+        timeout={2000}
+      >
+      <Routes location={location}>
           <Route path='/' element={<LoginPage/>}/>
           <Route path='/gift-tree' element={<GiftPage/>}/>
           <Route path='/oauth/google/callback' element={<OauthRedirect/>}/>
-          <Route path='/ad' elemen={<AdVideoPlayer/>}/>
-
+          <Route path='/ad' element={<AdVideoPlayer/>}/>
           <Route element={<PrivateRouter/>}>
             <Route path='/main' element={<MainPage/>}/>
             <Route path='/make-my-tree' element={<MakeTreePage/>}/>
             <Route path='/three' element={<ThreeExample/>}/>
           </Route>
         </Routes>
-      </BrowserRouter>
+      </CSSTransition>
+      </TransitionGroup>
     </div>
   );
 };
