@@ -92,12 +92,6 @@ export default function Canvas() {
     }
   };
 
-
-  const onDecoComplete = () => {
-    // canvasCur = canvasRef.current;
-    // canvasState = canvasCur.toDataURL();
-    // console.log("canvasstate: ",canvasState);
-  
   const onDecoComplete = () => {  
     // 직렬화된 Canvas 상태 데이터와 userId를 서버로 전송합니다.
     const canvasCur = canvasRef.current;
