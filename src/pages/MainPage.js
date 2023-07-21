@@ -5,7 +5,7 @@ import SideBar from '../components/SideBar';
 import {motion} from "framer-motion";
 import styled from 'styled-components';
 import BackgroundImg from "../img/loginImg.jpg";
-
+import { LoginBox, LoginBtnText, LoginContainer, LoginWapper } from '../styles/MainBackground';
 const MainPage = () => {
   return (
     <LoginWapper backgroundImg={BackgroundImg}>
@@ -22,7 +22,7 @@ const MainPage = () => {
               <LoginBtnText>나만의 트리 꾸미러 가기</LoginBtnText>
             </LoginBox>
           </Link>
-          <Link to={"/gift-tree"}>
+          <Link to={"/my-gift-tree"}>
             <LoginBox>
               <LoginBtnText>내 트리 확인하기</LoginBtnText>
             </LoginBox>
@@ -32,39 +32,5 @@ const MainPage = () => {
     </LoginWapper>
   );
 };
-
-const LoginWapper = styled.div`
-  height: 100vh;
-  width: 100vw;
-  background-repeat : no-repeat;
-  background-size : 100% 100%;
-  display: flex;
-  flex-direction: row;
-  background-image: url(${(props) => props.backgroundImg});
-`
-const LoginContainer = styled.div`
-  padding:10px;
-  position: fixed;
-  top: 48%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  transition: opacity 0.3s ease-in-out;
-`
-
-const LoginBox = styled.div`
-  margin-top: 30px;
-  width: 600px;
-  height: 120px;
-  background-color:#e9b000;
-  color: white;
-  border-radius: 20px;
-  padding-top: 30px;
-  box-sizing: border-box;
-  text-align: center;
-  box-shadow: 0px 2px 5px gray;
-`
-const LoginBtnText = styled.div`
-  font-size: 45px;
-`
 
 export default MainPage;

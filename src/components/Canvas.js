@@ -5,11 +5,14 @@ import Tree from "../img/tree.png";
 import axios from "axios"
 import axiosConfig from "../utils/api/axiosConfig";
 import { Button } from "reactstrap";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useUserStore } from "../stores";
 
 
 export default function Canvas() {
   const canvasRef = useRef(null);
+  const userId = useUserStore().user.id;
+  console.log("userId can: ", userId);
   const [selectedObj, setSelectedObj] = useState("");
   const [mousePosition, setMousePosition] = useState({
     positionX: null,
@@ -51,23 +54,19 @@ export default function Canvas() {
   const handleSelectedObj = (obj) => {
     setSelectedObj(obj);
   };
-  const onDecoComplete = () => {
-    // canvasCur = canvasRef.current;
-    // canvasState = canvasCur.toDataURL();
-    // console.log("canvasstate: ",canvasState);
-  
+  const onDecoComplete = () => {  
     // 직렬화된 Canvas 상태 데이터와 userId를 서버로 전송합니다.
     const canvasCur = canvasRef.current;
     const canvasState = canvasCur.toDataURL();
 
     axiosConfig.post("/save_image", {
       canvasState: canvasState,
-      userId: 2, // 예시로 userId를 1로 설정합니다.
+      userId: {userId},
     })
       .then(res => {
         console.log(res.data);
         localStorage.clear();
-        navigate("/main"); // 꾸미기 완료 페이지 만들기
+        navigate("/complete"); // 꾸미기 완료 페이지 만들기
       })
       .catch(error => {
         console.error("Failed to save canvas state:", error);
