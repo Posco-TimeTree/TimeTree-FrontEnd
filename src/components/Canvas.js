@@ -5,6 +5,7 @@ import Tree from "../img/tree.png";
 import axios from "axios"
 import axiosConfig from "../utils/api/axiosConfig";
 import { Button } from "reactstrap";
+import AdVideoPlayer from "./AdVideoPlayer";
 import { Link, useNavigate } from "react-router-dom";
 import { useUserStore } from "../stores";
 
@@ -19,6 +20,11 @@ export default function Canvas() {
     positionY: null,
   });
   const navigate = useNavigate();
+  const [adCount, setAdCount] = useState(0);
+  const [showAdContainer, setShowAdContainer] = useState(false);
+  const [showCancleButton, setshowCancleButton] = useState(false);
+  const [showAdTimeout, setShowAdTimeout] = useState(null);
+
 
   useEffect(() => {
     // 컴포넌트 마운트 시 저장된 Canvas 상태를 로드하여 복원합니다.
@@ -47,6 +53,12 @@ export default function Canvas() {
       100
     );
 
+    setAdCount((prevAdCount) => prevAdCount + 1);
+    // Show AdContainer if adCount reaches 10
+    if (adCount === 9) {
+      setShowAdContainer(true);
+    }
+
     // Canvas 상태를 JSON으로 직렬화하여 저장합니다.
     saveCanvasState();
   };
@@ -54,6 +66,32 @@ export default function Canvas() {
   const handleSelectedObj = (obj) => {
     setSelectedObj(obj);
   };
+  const showAdContainerAfterTimeout = () => {
+    const timeout = setTimeout(() => {
+      setShowAdContainer(true);
+      setshowCancleButton(true);
+    }, 10000);
+    setShowAdTimeout(timeout);
+  };
+  useEffect(() => {
+    showAdContainerAfterTimeout();
+
+    return () => {
+      // Clear the timeout on unmount or when adCount changes
+      if (showAdTimeout) {
+        clearTimeout(showAdTimeout);
+      }
+    };
+  }, [adCount]); 
+  const handleCancleButtonClick = () => {
+    setShowAdContainer(false);
+    setAdCount(0); // Reset adCount when AdContainer is closed
+    setshowCancleButton(false);
+    if (showAdTimeout) {
+      clearTimeout(showAdTimeout);
+    }
+  };
+
   const onDecoComplete = () => {  
     // 직렬화된 Canvas 상태 데이터와 userId를 서버로 전송합니다.
     const canvasCur = canvasRef.current;
@@ -149,6 +187,16 @@ export default function Canvas() {
         트리 꾸미기 완료
       </StyledButton>
     </ButtonWrapper>
+    {showAdContainer && (
+        <AdContainer>
+          <AdVideoPlayer />
+          {showCancleButton&&(
+            <CancleButton onClick={handleCancleButtonClick}>
+            Skip Ad
+          </CancleButton>
+          )}
+        </AdContainer>
+      )}
     </Wrapper>
   );
 }
@@ -195,5 +243,24 @@ const StyledButton = styled(Button)`
   border-color: green;
   &:hover{background-color: green;}
 `;
-const CanvasComponent = styled.canvas`
-`;
+
+const AdContainer = styled.div`
+  position: absolute;
+  display:flex;
+  flex-direction: row;
+  align-self: center;
+  right:0;
+  zIndex:1000;
+`
+const CancleButton = styled.button`
+  position: absolute;
+  right:0;
+  bottom: 100px;
+  width: 220px;
+  height: 75px;
+  font-size: 30px;
+  color: white;
+  background-color: rgba(50, 50, 50, 0.5);
+  z-index:1001;
+`
+const CanvasComponent = styled.canvas``
