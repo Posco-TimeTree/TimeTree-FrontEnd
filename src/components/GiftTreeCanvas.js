@@ -17,11 +17,6 @@ const images = [
   require("../img/giftBox3.png")
 ];
 
-const getRandomImage = () => {
-  const randomIndex = Math.floor(Math.random() * images.length);
-  return images[randomIndex];
-};
-
 export default function GiftTreeCanvas() {
   const canvasRef = useRef(null);
   const [selectedObj, setSelectedObj] = useState("");
@@ -32,7 +27,12 @@ export default function GiftTreeCanvas() {
   const {giftBoxCount, setGiftBoxCount} = useGiftBoxCountStore();
   const {user} = useUserStore();
   const [gifts, setGifts] = useState([]);
-  const giftImages = gifts.map(() => getRandomImage());
+  const imageOrder = [3, 2, 1, 2, 2, 3, 3, 2, 1, 1];
+  const giftImages = gifts.map((gift, index) => {
+    // Get the corresponding image index from the imageOrder array
+    const imageIndex = imageOrder[index % imageOrder.length];
+    return images[imageIndex - 1]; // Subtract 1 to map to the correct index (array is 0-based)
+  });
 
   const [mousePosition, setMousePosition] = useState({
     positionX: null,
@@ -57,6 +57,7 @@ export default function GiftTreeCanvas() {
         setGifts(res.data);
       })
   }
+
 
   const [canvasState, setCanvasState] = useState("");
   useEffect(() => {
