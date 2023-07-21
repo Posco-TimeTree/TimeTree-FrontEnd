@@ -18,7 +18,7 @@ const AppRouter = () => {
         <Routes>
           <Route path='/' element={<LoginPage/>}/>
           <Route path='/gift-tree/:id/:code' element={<GiftPage/>}/>
-          <Route path='/oauth/google/callback' element={<OauthRedirect/>}/>
+          <Route path='/oauth/naver/callback' element={<OauthRedirect/>}/>
           <Route path='/ad' elemen={<AdVideoPlayer/>}/>
 
           <Route element={<PrivateRouter/>}>

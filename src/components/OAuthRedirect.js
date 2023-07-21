@@ -12,10 +12,10 @@ const OauthRedirect = () => {
     const {setUser} = useUserStore();
     const navigate = useNavigate();
 
-    if (location.pathname === "/oauth/naver/callback") {
-        url = `/oauth/naver/callback?code=${authCode}`;
-        console.log('1', url);
-    }
+    // if (location.pathname === "/oauth/naver/callback") {
+    //     url = `/oauth/naver/callback?code=${authCode}`;
+    //     console.log('1', url);
+    // }
 
     const authLogin = async () => {
         axiosConfig.post("/oauth/naver/callback", {
@@ -39,9 +39,9 @@ const OauthRedirect = () => {
     };
 
     useEffect(() => {
-        if (url !== "") {
+      console.log("authcode: ", authCode);
+        if (authCode !== "") {
             authLogin();
-            console.log(url);
         }
     }, []);
 };
