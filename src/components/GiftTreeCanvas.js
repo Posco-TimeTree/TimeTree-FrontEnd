@@ -44,6 +44,7 @@ export default function GiftTreeCanvas({userId}) {
   const toggle = () => setIsOpen(!isOpen);
   const selectGift = (index) => {
     setSelectedGift(index); // Set the selected gift index
+    console.log(isOpen);
     toggle(); // Open the modal
   };
 
@@ -64,15 +65,18 @@ export default function GiftTreeCanvas({userId}) {
   const [canvasState, setCanvasState] = useState("");
   useEffect(() => {
     // 컴포넌트 마운트 시 저장된 Canvas 상태를 로드하여 복원합니다.
-    loadCanvasState();
-    setIsReloaded(true);
-    getMessages();
-    setGiftBoxCount(gifts.length);
-  }, []);
+    if(userId !== 0){
+      loadCanvasState();
+      setIsReloaded(true);
+      getMessages();
+      setGiftBoxCount(gifts.length);
+    }
+  }, [userId]);
 
   useEffect(()=>{
-    getMessages();
-  }, [giftBoxCount]);
+    if(userId!==0)
+      getMessages();
+  }, [giftBoxCount, userId]);
 
   useEffect(() => {
     const canvasCur = canvasRef.current;
@@ -105,13 +109,13 @@ export default function GiftTreeCanvas({userId}) {
   if (gifts.length >= 10) {
     snowmanImageIndex = 2;
   }
-  const onClickImg = ({index}) => {
-    if (currentDate > definedDate) {
-      selectGift(index);
-    } else {
-      setWaitingModal(true);
-    }
-  }
+  // const onClickImg = ({index}) => {
+  //   if (currentDate > definedDate) {
+  //     selectGift(index);
+  //   } else {
+  //     setWaitingModal(true);
+  //   }
+  // }
   return (
     <Wrapper
       onMouseMove={(e) => {
@@ -142,7 +146,7 @@ export default function GiftTreeCanvas({userId}) {
           key={index}
           >
             <img
-              key={index}
+              key={gift.boxId}
               src={giftImages[index]}
               alt="img"
               style={{
@@ -150,12 +154,20 @@ export default function GiftTreeCanvas({userId}) {
                 height: "auto",
                 overflow: "visible",
                 zIndex: index,
+                cursor: "pointer",
                 marginRight: index === Math.floor(length/ 2 -1) ? "200px" : "-5px",
                 // marginTop: "-8px"
               }}
-              onClick={() => {onClickImg(index)}}
+              // onClick={() => onClickImg(gift.boxId)}
+              onClick={()=>{
+                if (currentDate > definedDate) {
+                  selectGift(gift.boxId);
+                } else {
+                  setWaitingModal(true);
+                }
+              }}
             />
-            {isOpen && (selectedGift === index) && ( // Conditionally render the modal
+            {isOpen && (selectedGift === gift.boxId) && ( // Conditionally render the modal
               <GiftModal>
                 <Card body style={{ width: "500px" }}>
                   <CardTitle style={{ marginBottom: "20px" }} tag="h2">{index + 1}번째 편지</CardTitle>

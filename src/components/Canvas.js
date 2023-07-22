@@ -12,8 +12,8 @@ import { useUserStore } from "../stores";
 
 export default function Canvas() {
   const canvasRef = useRef(null);
-  const userId = useUserStore().user.id;
-  console.log("userId can: ", userId);
+  const {user} = useUserStore();
+  console.log("can user: ", user);
   const [selectedObj, setSelectedObj] = useState("");
   const [mousePosition, setMousePosition] = useState({
     positionX: null,
@@ -99,7 +99,7 @@ export default function Canvas() {
 
     axiosConfig.post("/save_image", {
       canvasState: canvasState,
-      userId: {userId},
+      userId: user.id,
     })
       .then(res => {
         console.log(res.data);

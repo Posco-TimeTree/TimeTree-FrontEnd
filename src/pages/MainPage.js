@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import Canvas from '../components/Canvas';
 import SideBar from '../components/SideBar';
@@ -7,12 +7,10 @@ import styled from 'styled-components';
 import BackgroundImg from "../img/loginImg.jpg";
 import { LoginBox, LoginBtnText, LoginContainer, LoginWapper } from '../styles/MainBackground';
 import { useUserStore } from '../stores';
-import { getCookie } from '../utils/auth/cookies';
+
 const MainPage = () => {
-  const {user} = useUserStore();
+  const {user, setUser} = useUserStore();
   console.log("main: ", user);
-  getCookie("token");
-  
   return (
     <LoginWapper backgroundImg={BackgroundImg}>
       <motion.div

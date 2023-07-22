@@ -9,9 +9,14 @@ import ToggleLight from '../components/ToggleLight';
 import Outside from "../img/outside.jpg";
 import Snowfall from 'react-snowfall';
 import { useLocation } from 'react-router-dom';
+import { getCookie } from '../utils/auth/cookies';
 
 const GiftPage = () => {
   const { user } = useUserStore();
+  console.log("giftpage: ", user);
+  const token = getCookie("token");
+  console.log("giftpageToken: ", token);
+
   const location = useLocation();
   const {pathname, search} = location;
 
@@ -30,14 +35,13 @@ const GiftPage = () => {
     }
   },[]);
   useEffect(()=>{
-    console.log(userId, userName);
-  },[userId, userName]);
-  
+    console.log("giftpageidname: ",userId, userName);
+  },[]);
 
   return (
     <>
     
-    <ButtonWrapper>
+    {!token && <ButtonWrapper>
       <StyledButton
         color="primary"
         size='lg'
@@ -46,11 +50,11 @@ const GiftPage = () => {
       >
         편지 쓰기
       </StyledButton>
-    </ButtonWrapper>
+    </ButtonWrapper>}
 
     <Wrapper>
       <Title>{userName}님의 크리스마스 트리</Title>
-      {userId !== 0 && <GiftTreeCanvas userId={userId}/>}
+      {userId !== undefined && <GiftTreeCanvas userId={userId}/>}
     </Wrapper>
 
     <WriteLetter/>

@@ -1,10 +1,21 @@
 import {create} from 'zustand';
-export const useUserStore = create((set) => ({
-  user: {
-    id: 2,
-    name: 'skskskks미진',
-    email: 'mijinasdfsdf@naver.com',
-    // 기타 다른 필요한 사용자 정보들...
-  },
-  setUser: (userData) => set({ user: userData }),
-}));
+import { persist, createJSONStorage } from 'zustand/middleware'
+import { deleteCookie, getCookie, setCookie } from '../utils/auth/cookies';
+
+export const useUserStore = create(
+  persist(
+    (set) => ({
+      user: {
+        id: 0,
+        name: '',
+        email: '',
+        token: '',
+      },
+      setUser: (userData) => set({ user: userData }),
+    }),
+    {
+      name: 'userStore', 
+      storage: localStorage,
+    }
+  )
+);

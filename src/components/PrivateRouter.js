@@ -7,7 +7,10 @@ import { deleteCookie, getCookie } from '../utils/auth/cookies';
 import ModalCom from './ModalCom';
 
 const PrivateRouter = ({children}) => {
-  const token = getCookie("token");
+  // const token = getCookie("token");
+  const storage = JSON.parse(localStorage.getItem("userStore"));
+  console.log(storage);
+  const token = storage.user.token;
   const [logout, setLogout] = useState(false);
   const {setUser} = useUserStore();
   const navigate = useNavigate();

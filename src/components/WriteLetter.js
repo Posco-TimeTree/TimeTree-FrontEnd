@@ -5,10 +5,16 @@ import axiosConfig from '../utils/api/axiosConfig';
 import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
 import {useToggleStore, useUserStore} from "../stores";
 import {useGiftBoxCountStore} from "../stores/giftBoxCount";
+import { useLocation } from 'react-router-dom';
 
 const WriteLetter = () => {
   const {isToggled, toggle} = useToggleStore();
-  const {user} = useUserStore();
+  // const {user} = useUserStore();
+  const location = useLocation();
+  const {pathname, search} = location;
+  const userId = pathname.slice(11,12);
+  const userName = decodeURIComponent(search.slice(6));
+
   const [message, setMessage] = useState("");
   const [length, setLength] = useState(0);
   const {giftBoxCount, setGiftBoxCountPlus} = useGiftBoxCountStore();
@@ -25,7 +31,7 @@ const WriteLetter = () => {
     setLength(0);
 
     axiosConfig.post("/messages",{
-      userId: 2,
+      userId: userId,
       content: message,
     }).then(res=>{
       console.log(res.data);
@@ -37,16 +43,11 @@ const WriteLetter = () => {
     setMessage(value);
     setLength(value.length);
   }
-  // const handleSubmit = ()=>{
-  //   return(
 
-  //   )
-  // }
   return (
     <Wrapper>
-      {/* <ModalCom isOpen={isToggled} toggle={toggle} size={"lg"} body={handleSubmit}/> */}
       <Modal isOpen={isToggled} toggle={toggle} centered size={"lg"}>
-        <ModalHeader toggle={toggle}>To. {user.name}</ModalHeader>
+        <ModalHeader toggle={toggle}>To. {userName}</ModalHeader>
         <ModalBody>
           <form onSubmit={onSubmit}>
             <Label for="exampleText">편지를 남겨주세요</Label>
