@@ -5,6 +5,7 @@ import BackgroundImg from '../img/loginImg.jpg';
 import { LoginBox, LoginBtnText, LoginContainer, LoginWapper, Text, BoxContainer } from '../styles/MainBackground';
 import { v4 as uuidv4 } from 'uuid'; 
 import { useUserStore } from "../stores";
+import { setCookie } from '../utils/auth/cookies';
 
 const CompletePage = () => {
   const {user} = useUserStore();
@@ -12,7 +13,7 @@ const CompletePage = () => {
   const generateRandomLink = () => {
     const randomLink = uuidv4(); 
     const url = `${window.location.origin}/gift-tree/${user.id}/${randomLink}?name=${user.name}`;
-
+    setCookie("shareLink", url);
     // 클립보드에 복사
     navigator.clipboard.writeText(url).then(() => {
       console.log('링크가 클립보드에 복사되었습니다. 공유해주세요!');

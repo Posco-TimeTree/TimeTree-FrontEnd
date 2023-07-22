@@ -30,7 +30,7 @@ const OauthRedirect = () => {
                   email: data.email,
                   token: data.token,
                 })
-                // setCookie("token", data.token, 1);
+                // setCookie("userStore", user, 1);
                 setGo(true);
             })
             .catch((error) => {
@@ -48,7 +48,8 @@ const OauthRedirect = () => {
     useEffect(() => {
       console.log(user);
       if (go) {
-            navigate("/main");
+        setCookie("userStore", user, 1);
+        navigate("/main");
       }
     }, [go]);
 };

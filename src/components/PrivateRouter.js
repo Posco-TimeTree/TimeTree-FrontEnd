@@ -7,14 +7,22 @@ import { deleteCookie, getCookie } from '../utils/auth/cookies';
 import ModalCom from './ModalCom';
 
 const PrivateRouter = ({children}) => {
-  // const token = getCookie("token");
-  const storage = JSON.parse(localStorage.getItem("userStore"));
-  console.log(storage);
-  const token = storage.user.token;
+  const storage = getCookie("userStore");
+  const token = storage.token;
   const [logout, setLogout] = useState(false);
-  const {setUser} = useUserStore();
+  const {user, setUser} = useUserStore();
+
+  if(user.id === 0 && storage){
+    setUser({
+      id: storage.id,
+      name: storage.name,
+      email: storage.email,
+      token: storage.token,
+    });
+  }
   const navigate = useNavigate();
-  if(!token){
+
+  if(token === ""){
     setTimeout(()=>navigate(-1), 500);
   }
 
@@ -24,13 +32,14 @@ const PrivateRouter = ({children}) => {
     if(logout){
       setTimeout(() => {
         setLogout(false);
-        deleteCookie("token");
+        deleteCookie("userStore");
         setUser({
-          userId: 0,
+          id: 0,
           name: "",
           email: "",
+          token: ""
         });
-        navigate("/main");
+        navigate("/");
       }, 1500);
     }
   },[logout]);

@@ -17,7 +17,7 @@ const images = [
   require("../img/giftBox3.png")
 ];
 
-export default function GiftTreeCanvas({userId}) {
+export default function GiftTreeCanvas({userId, isMine}) {
   const canvasRef = useRef(null);
   const [selectedObj, setSelectedObj] = useState("");
   const [isOpen, setIsOpen] = useState(false);
@@ -44,7 +44,7 @@ export default function GiftTreeCanvas({userId}) {
   const toggle = () => setIsOpen(!isOpen);
   const selectGift = (index) => {
     setSelectedGift(index); // Set the selected gift index
-    console.log(isOpen);
+    console.log(isOpen,"ismine: ", isMine);
     toggle(); // Open the modal
   };
 
@@ -156,9 +156,7 @@ export default function GiftTreeCanvas({userId}) {
                 zIndex: index,
                 cursor: "pointer",
                 marginRight: index === Math.floor(length/ 2 -1) ? "200px" : "-5px",
-                // marginTop: "-8px"
               }}
-              // onClick={() => onClickImg(gift.boxId)}
               onClick={()=>{
                 if (currentDate > definedDate) {
                   selectGift(gift.boxId);
@@ -167,21 +165,22 @@ export default function GiftTreeCanvas({userId}) {
                 }
               }}
             />
-            {isOpen && (selectedGift === gift.boxId) && ( // Conditionally render the modal
+            {isMine &&
+            (isOpen && (selectedGift === gift.boxId) && ( 
               <GiftModal>
                 <Card body style={{ width: "500px" }}>
-                  <CardTitle style={{ marginBottom: "20px" }} tag="h2">{index + 1}번째 편지</CardTitle>
-                  <CardText style={{ marginBottom: "30px" }} tag="h3">{gift.content}</CardText>
+                  <CardTitle style={{ marginBottom: "20px" }} tag="h3">{index + 1}번째 편지</CardTitle>
+                  <CardText style={{ marginBottom: "30px" }} tag="h2">{gift.content}</CardText>
                   <Button onClick={toggle} color="success">확인</Button>
                 </Card>
               </GiftModal>
-            )}
-
+            ))}
           </motion.div>
         )})}
+        {!isMine && <ModalCom isOpen={isOpen} toggle={toggle} body={"방문자님의 선물이 아닙니다"}/>}
 
         {waitingModal && 
-          <ModalCom isOpen={waitingModal} toggle={() => setWaitingModal(!waitingModal)} body={"12월 25일을 기다려주세요!"}/>}
+            <ModalCom isOpen={waitingModal} toggle={() => setWaitingModal(!waitingModal)} body={"12월 25일을 기다려주세요!"}/>}
         
         <SnowmanZone>
           <Link to="/three" style={{ width: "fit-content"}}>
