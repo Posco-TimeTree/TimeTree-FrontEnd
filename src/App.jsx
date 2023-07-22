@@ -6,7 +6,7 @@ import AppRouter from './components/AppRouter';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import ReactPlayer from 'react-player';
 
-const mp3Files = ['IU.mp3', 'All I Want for Christmas Is You.mp3', 'Underneath the Tree.mp3', 'Santa Tell Me.mp3']; // 필요에 따라 더 많은 mp3 파일을 추가하세요
+const mp3Files = ['music1.mp3', 'music2.mp3', 'music3.mp3', 'music4.mp3']; // 필요에 따라 더 많은 mp3 파일을 추가하세요
 
 export default function App() {
   const [isPlaying, setIsPlaying] = useState(false);
