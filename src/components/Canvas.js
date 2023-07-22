@@ -73,16 +73,6 @@ export default function Canvas() {
     }, 10000);
     setShowAdTimeout(timeout);
   };
-  useEffect(() => {
-    showAdContainerAfterTimeout();
-
-    return () => {
-      // Clear the timeout on unmount or when adCount changes
-      if (showAdTimeout) {
-        clearTimeout(showAdTimeout);
-      }
-    };
-  }, [adCount]); 
   const handleCancleButtonClick = () => {
     setShowAdContainer(false);
     setAdCount(0); // Reset adCount when AdContainer is closed
