@@ -8,7 +8,7 @@ import ModalCom from './ModalCom';
 
 const PrivateRouter = ({children}) => {
   const storage = getCookie("userStore");
-  const token = storage.token;
+  // const token = storage.token;
   const [logout, setLogout] = useState(false);
   const {user, setUser} = useUserStore();
 
@@ -22,8 +22,8 @@ const PrivateRouter = ({children}) => {
   }
   const navigate = useNavigate();
 
-  if(token === ""){
-    setTimeout(()=>navigate(-1), 500);
+  if(!storage){
+    setTimeout(()=>navigate("/"), 500);
   }
 
   const toggle = ()=>setLogout(false);

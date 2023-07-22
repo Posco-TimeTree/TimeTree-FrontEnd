@@ -10,6 +10,7 @@ import { Link } from "react-router-dom";
 import { useUserStore } from "../stores";
 import Snowfall from 'react-snowfall';
 import ModalCom from "./ModalCom";
+import confetti from 'canvas-confetti';
 
 const images = [
   require("../img/giftBox1.png"),
@@ -160,6 +161,11 @@ export default function GiftTreeCanvas({userId, isMine}) {
               onClick={()=>{
                 if (currentDate > definedDate) {
                   selectGift(gift.boxId);
+                  confetti({
+                    particleCount: 100,
+                    spread: 100,
+                    origin: { y: 0.6 }
+                  });
                 } else {
                   setWaitingModal(true);
                 }
