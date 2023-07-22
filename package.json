@@ -62,5 +62,5 @@
   "devDependencies": {
     "@types/styled-components": "^5.1.26"
   },
-  "proxy": "http://localhost:8080"
+  "proxy": "http://175.45.202.192:8080"
 }
