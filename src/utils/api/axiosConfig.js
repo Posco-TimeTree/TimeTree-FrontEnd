@@ -1,7 +1,7 @@
 import axios from "axios";
 import { getCookie } from "../auth/cookies";
 
-axios.defaults.headers["Access-Control-Allow-Origin"] = "*";
+// axios.defaults.headers["Access-Control-Allow-Origin"] = "*";
 axios.defaults.withCredentials = true;
 axios.defaults.headers.common["Referrer-Policy"] = "no-referrer-when-downgrade";
 const token = getCookie("token");
